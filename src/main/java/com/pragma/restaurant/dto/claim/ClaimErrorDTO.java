@@ -1,6 +1,6 @@
-package com.pragma.restaurant.dto;
+package com.pragma.restaurant.dto.claim;
 
-public class MenuErrorDTO extends MenuDTO {
+public class ClaimErrorDTO extends ClaimDTO{
     private String error;
 
     public String getError() {
@@ -10,4 +10,5 @@ public class MenuErrorDTO extends MenuDTO {
     public void setError(String error) {
         this.error = error;
     }
+
 }

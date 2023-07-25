@@ -1,4 +1,4 @@
-package com.pragma.restaurant.dto;
+package com.pragma.restaurant.dto.menu;
 
 public class MenuResponseDTO extends MenuDTO {
     private String name;
