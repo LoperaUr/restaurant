@@ -19,15 +19,6 @@ public interface MenuMapper {
             @Mapping(source ="image",target="image"),
     })
 
-
-
-
-
-
-
     MenuResponseDTO ToDto(Menu menu);
-
     List<MenuResponseDTO> toDtoList(List<Menu> menu);
-
-    Page<MenuResponseDTO> toDtoPage(Page<Menu> menus);
 }

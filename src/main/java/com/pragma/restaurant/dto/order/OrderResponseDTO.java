@@ -1,20 +1,29 @@
 package com.pragma.restaurant.dto.order;
 
-import com.pragma.restaurant.entity.Menu;
+import com.pragma.restaurant.dto.orderDetail.OrderDetailDTO;
 
 import java.util.List;
 
 public class OrderResponseDTO {
-    private List<Menu> menuList;
+    private Long id;
     private String restaurant;
     private String orderState;
-
-    public List<Menu> getMenuList() {
-        return menuList;
+    private List<OrderDetailDTO> detailDTOS;
+    
+    public Long getId() {
+        return id;
     }
 
-    public void setMenuList(List<Menu> menuList) {
-        this.menuList = menuList;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<OrderDetailDTO> getMenuList() {
+        return detailDTOS;
+    }
+
+    public void setMenuList(List<OrderDetailDTO> menuList) {
+        this.detailDTOS = menuList;
     }
 
     public String getRestaurant() {

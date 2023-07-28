@@ -117,7 +117,7 @@ public class MenuService implements BaseService<MenuResponseDTO, Menu> {
         try {
             Pageable pageable = PageRequest.of(0, size);
             Page<Menu> menus = menuRepository.findByRestaurantAndAndCategory(restaurant, category, pageable);
-            return menuMapper.toDtoPage(menus);
+            return menus.map(menuMapper::ToDto);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

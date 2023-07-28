@@ -1,5 +1,7 @@
 package com.pragma.restaurant.controller;
 
+import com.pragma.restaurant.dto.menu.MenuDTO;
+import com.pragma.restaurant.dto.menu.MenuErrorDTO;
 import com.pragma.restaurant.dto.menu.MenuResponseDTO;
 import com.pragma.restaurant.entity.Menu;
 import com.pragma.restaurant.service.MenuService;
@@ -32,41 +34,47 @@ public class MenuController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<MenuResponseDTO> getById(@PathVariable Long id) {
+    ResponseEntity<MenuDTO> getById(@PathVariable Long id) {
         try {
             return ResponseEntity
                     .ok()
                     .body(menuService.searchById(id));
         } catch (Exception e) {
+            MenuErrorDTO resError = new MenuErrorDTO();
+            resError.setError(e.getMessage());
             return ResponseEntity
                     .badRequest()
-                    .body(null);
+                    .body(resError);
         }
     }
 
     @PostMapping("/")
-    ResponseEntity<MenuResponseDTO> create(@RequestBody Menu data) {
+    ResponseEntity<MenuDTO> create(@RequestBody Menu data) {
         try {
             return ResponseEntity
                     .ok()
                     .body(menuService.create(data));
         } catch (Exception e) {
+            MenuErrorDTO resError = new MenuErrorDTO();
+            resError.setError(e.getMessage());
             return ResponseEntity
                     .badRequest()
-                    .body(null);
+                    .body(resError);
         }
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<MenuResponseDTO> update(@PathVariable Long id, @RequestBody Menu data) {
+    ResponseEntity<MenuDTO> update(@PathVariable Long id, @RequestBody Menu data) {
         try {
             return ResponseEntity
                     .ok()
                     .body(menuService.update(id, data));
         } catch (Exception e) {
+            MenuErrorDTO resError = new MenuErrorDTO();
+            resError.setError(e.getMessage());
             return ResponseEntity
                     .badRequest()
-                    .body(null);
+                    .body(resError);
         }
     }
 
@@ -79,7 +87,7 @@ public class MenuController {
         } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
-                    .body(null);
+                    .body(false);
         }
     }
 }

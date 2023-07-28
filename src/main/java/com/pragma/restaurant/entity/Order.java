@@ -1,5 +1,6 @@
 package com.pragma.restaurant.entity;
 
+import com.pragma.restaurant.util.StateOrder;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -16,17 +17,40 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private char rol;
-    // private List<Menu> menuList;
+    private Character rolRequest;
+    private Character rolAp;
     private String restaurant;
-    private String orderState;
+    private Integer idUser;
 
-    public char getRol() {
-        return rol;
+    @Enumerated(EnumType.STRING)
+    private StateOrder orderState = StateOrder.PENDING;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id")
+    private List<OrderDetails> menuList;
+
+    public Integer getIdUser() {
+        return idUser;
     }
 
-    public void setRol(char rol) {
-        this.rol = rol;
+    public void setIdUser(Integer idUser) {
+        this.idUser = idUser;
+    }
+
+    public Character getRolRequest() {
+        return rolRequest;
+    }
+
+    public void setRolRequest(Character rolRequest) {
+        this.rolRequest = rolRequest;
+    }
+
+    public Character getRolAp() {
+        return rolAp;
+    }
+
+    public void setRolAp(Character rolAp) {
+        this.rolAp = rolAp;
     }
 
     public String getRestaurant() {
@@ -37,11 +61,19 @@ public class Order {
         this.restaurant = restaurant;
     }
 
-    public String getOrderState() {
+    public List<OrderDetails> getMenuList() {
+        return menuList;
+    }
+
+    public void setMenuList(List<OrderDetails> menuList) {
+        this.menuList = menuList;
+    }
+
+    public StateOrder getOrderState() {
         return orderState;
     }
 
-    public void setOrderState(String orderState) {
+    public void setOrderState(StateOrder orderState) {
         this.orderState = orderState;
     }
 
@@ -52,4 +84,5 @@ public class Order {
     public Long getId() {
         return id;
     }
+
 }
