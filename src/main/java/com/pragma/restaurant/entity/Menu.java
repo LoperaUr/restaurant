@@ -16,7 +16,7 @@ public class Menu {
     private Long id;
 
     @Column(nullable = false)
-    private char rol;
+    private Character rol;
 
     @Column(nullable = false)
     private String name;
@@ -30,13 +30,11 @@ public class Menu {
 
     private String category;
 
-    private boolean state;
+    private Boolean state = true;
 
     private String restaurant;
 
     private Double time;
-
-
 
     public Long getId() {
         return id;
@@ -46,8 +44,12 @@ public class Menu {
         this.id = id;
     }
 
-    public char getRol() {
+    public Character getRol() {
         return rol;
+    }
+
+    public void setRol(Character rol) {
+        this.rol = rol;
     }
 
     public void setRol(char rol) {
@@ -94,8 +96,12 @@ public class Menu {
         this.category = category;
     }
 
-    public boolean isState() {
+    public Boolean getState() {
         return state;
+    }
+
+    public void setState(Boolean state) {
+        this.state = state;
     }
 
     public void setState(boolean state) {
