@@ -22,6 +22,8 @@ public class OrderService {
 
     private final OrderMapper orderMapper;
 
+
+
     private final MenuRepository menuRepository;
 
     public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, MenuRepository menuRepository) {
@@ -35,13 +37,13 @@ public class OrderService {
             if (order.getRolRequest() != ('C')) {
                 throw new Exception("No tiene permisos para crear una orden");
             }
-            if (orderRepository.findByIdUser(order.getIdUser()).getOrderState().equals(StateOrder.PENDING)) {
+            if (orderRepository.findByUserOrder(order.getUserOrder()).getOrderState().equals(StateOrder.PENDING)) {
                 throw new Exception("El usuario ya tiene una orden PENDIENTE");
             }
-            if (orderRepository.findByIdUser(order.getIdUser()).getOrderState().equals(StateOrder.IN_PREPARATION)) {
+            if (orderRepository.findByUserOrder(order.getUserOrder()).getOrderState().equals(StateOrder.IN_PREPARATION)) {
                 throw new Exception("El usuario ya tiene una orden EN PREPARACIÓN");
             }
-            if (orderRepository.findByIdUser(order.getIdUser()).getOrderState().equals(StateOrder.READY)) {
+            if (orderRepository.findByUserOrder(order.getUserOrder()).getOrderState().equals(StateOrder.READY)) {
                 throw new Exception("El usuario ya tiene una orden LISTA");
             }
             /*if (validateRestaurantIsSame(order, order.getRestaurant())) {
@@ -51,9 +53,9 @@ public class OrderService {
                 throw new Exception("La sede y los detalles de la orden son obligatorios");
             }
             for (OrderDetails detail : order.getMenuList()) {
-                Long id = detail.getMenu().getId();
+                Long id = detail.getMenuId().getId();
                 Optional<Menu> menuOptional = menuRepository.findById(id);
-                detail.getMenu().setName(menuOptional.get().getName());
+                detail.getMenuId().setName(menuOptional.get().getName());
             }
             return orderMapper.toDto(orderRepository.save(order));
         } catch (Exception e) {
@@ -74,7 +76,7 @@ public class OrderService {
         }
     }
 
-    public OrderResponseDTO updateOrderStateToInPreparation(Integer id, Order data) throws Exception {
+    public OrderResponseDTO updateOrderStateToInPreparation(Long id, Order data) throws Exception {
         try {
             if (data.getRolAp() != ('A')) {
                 throw new Exception("No tiene permisos para actualizar una orden");
@@ -92,7 +94,7 @@ public class OrderService {
         }
     }
 
-    public OrderResponseDTO updateOrderStateToReady(Integer id, Order data) throws Exception {
+    public OrderResponseDTO updateOrderStateToReady(Long id, Order data) throws Exception {
         try {
             if (data.getRolAp() != ('A')) {
                 throw new Exception("No tiene permisos para actualizar una orden");
@@ -110,7 +112,7 @@ public class OrderService {
         }
     }
 
-    public OrderResponseDTO updateOrderStateToDelivered(Integer id, Order data) throws Exception {
+    public OrderResponseDTO updateOrderStateToDelivered(Long id, Order data) throws Exception {
         try {
             if (data.getRolAp() != ('A')) {
                 throw new Exception("No tiene permisos para actualizar una orden");

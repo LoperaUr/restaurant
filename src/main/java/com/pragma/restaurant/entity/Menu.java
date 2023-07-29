@@ -5,9 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
+import java.util.List;
+
 @Entity
 @Table(name = "menu")
 public class Menu {
@@ -35,6 +34,26 @@ public class Menu {
     private String restaurant;
 
     private Double time;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "menuId")
+    private List<OrderDetails> orderDetails;
+
+    public Menu() {
+    }
+
+    public Menu(Long id, Character rol, String name, Integer price, String description, String image, String category, Boolean state, String restaurant, Double time, List<OrderDetails> orderDetails) {
+        this.id = id;
+        this.rol = rol;
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.image = image;
+        this.category = category;
+        this.state = state;
+        this.restaurant = restaurant;
+        this.time = time;
+        this.orderDetails = orderDetails;
+    }
 
     public Long getId() {
         return id;

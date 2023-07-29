@@ -1,18 +1,11 @@
 package com.pragma.restaurant.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
 @Entity
 @Table(name = "client")
 public class Client {
@@ -22,12 +15,24 @@ public class Client {
     private Integer id;
     @Column(name = "name", nullable = false)
     private String name;
+
     @Column(name = "order_active", nullable = false)
     private boolean orderActive = false;
+
     @OneToMany(mappedBy = "userOrder")
     @JsonManagedReference
     @JsonIgnore
-    private List<Order> order;
+    private List<Order> orderUser;
+
+    public Client() {
+    }
+
+    public Client(Integer id, String name, boolean orderActive, List<Order> orderUser) {
+        this.id = id;
+        this.name = name;
+        this.orderActive = orderActive;
+        this.orderUser = orderUser;
+    }
 
     public Integer getId() {
         return id;
@@ -53,12 +58,11 @@ public class Client {
         this.orderActive = orderActive;
     }
 
-    public List<Order> getOrder() {
-        return order;
+    public List<Order> getOrderUser() {
+        return orderUser;
     }
 
-    public void setOrder(List<Order> order) {
-        this.order = order;
+    public void setOrderUser(List<Order> orderUser) {
+        this.orderUser = orderUser;
     }
-
 }

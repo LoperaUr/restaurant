@@ -10,7 +10,11 @@ public class OrderDetails {
 
     @ManyToOne
     @JoinColumn(name = "menu_id", nullable = false)
-    private Menu menu;
+    private Menu menuId;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order orderId;
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
@@ -18,9 +22,10 @@ public class OrderDetails {
     public OrderDetails() {
     }
 
-    public OrderDetails(Long id, Menu menu, Integer quantity) {
+    public OrderDetails(Long id, Menu menuId, Order orderId, Integer quantity) {
         this.id = id;
-        this.menu = menu;
+        this.menuId = menuId;
+        this.orderId = orderId;
         this.quantity = quantity;
     }
 
@@ -32,12 +37,20 @@ public class OrderDetails {
         this.id = id;
     }
 
-    public Menu getMenu() {
-        return menu;
+    public Menu getMenuId() {
+        return menuId;
     }
 
-    public void setMenu(Menu menu) {
-        this.menu = menu;
+    public void setMenuId(Menu menuId) {
+        this.menuId = menuId;
+    }
+
+    public Order getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Order orderId) {
+        this.orderId = orderId;
     }
 
     public Integer getQuantity() {

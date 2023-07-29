@@ -20,21 +20,23 @@ public class Order {
     private Character rolRequest;
     private Character rolAp;
     private String restaurant;
-    private Integer idUser;
+
+    @ManyToOne
+    @JoinColumn(name = "id_user", nullable = false)
+    private Client userOrder;
 
     @Enumerated(EnumType.STRING)
     private StateOrder orderState = StateOrder.PENDING;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_order")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
     private List<OrderDetails> menuList;
 
-    public Integer getIdUser() {
-        return idUser;
+    public Client getUserOrder() {
+        return userOrder;
     }
 
-    public void setIdUser(Integer idUser) {
-        this.idUser = idUser;
+    public void setUserOrder(Client idUser) {
+        this.userOrder = idUser;
     }
 
     public Character getRolRequest() {
