@@ -12,12 +12,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.pragma.restaurant.validation.OrderValidation.validateRestaurantAndDetails;
 
 @Service
-public class OrderService {
+public class OrderService implements BaseService<OrderResponseDTO,Order>{
     private final OrderRepository orderRepository;
 
     private final OrderMapper orderMapper;
@@ -131,4 +132,28 @@ public class OrderService {
     }
 
 
+    @Override
+    public List<OrderResponseDTO> searchAll() throws Exception {
+        return null;
+    }
+
+    @Override
+    public OrderResponseDTO searchById(Long id) throws Exception {
+        return null;
+    }
+
+    @Override
+    public OrderResponseDTO create(Order data) throws Exception {
+        return null;
+    }
+
+    @Override
+    public OrderResponseDTO update(Long id, Order data) throws Exception {
+        return null;
+    }
+
+    @Override
+    public boolean delete(Long id) throws Exception {
+        return false;
+    }
 }

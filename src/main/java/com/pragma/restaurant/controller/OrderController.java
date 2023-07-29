@@ -7,13 +7,15 @@ import com.pragma.restaurant.dto.order.OrderDTO;
 import com.pragma.restaurant.dto.order.OrderErrorDTO;
 import com.pragma.restaurant.dto.order.OrderResponseDTO;
 import com.pragma.restaurant.entity.Menu;
-import com.pragma.restaurant.service.MenuService;
+
+import com.pragma.restaurant.entity.Order;
 import com.pragma.restaurant.service.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@RestController
+@RequestMapping("api/v1/order")
 public class OrderController {
 
     private final OrderService orderService;

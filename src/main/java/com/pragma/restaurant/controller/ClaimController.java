@@ -22,7 +22,7 @@ public class ClaimController {
 
 
     @GetMapping("/")
-    public ResponseEntity<List<ClaimResponseDTO>> getAll() {
+    public  ResponseEntity<List<ClaimResponseDTO>> getAll() {
         try {
             return ResponseEntity
                     .ok()

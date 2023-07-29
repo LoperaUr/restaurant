@@ -2,24 +2,21 @@ package com.pragma.restaurant.service;
 
 import com.pragma.restaurant.dto.client.ClientDTO;
 import com.pragma.restaurant.dto.client.ClientResponseDTO;
-import com.pragma.restaurant.dto.menu.MenuResponseDTO;
+
 import com.pragma.restaurant.entity.Client;
-import com.pragma.restaurant.entity.Menu;
+
 import com.pragma.restaurant.mapper.ClientMapper;
-import com.pragma.restaurant.mapper.MenuMapper;
+
 import com.pragma.restaurant.repository.ClientRepository;
-import com.pragma.restaurant.repository.MenuRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-import static com.pragma.restaurant.validation.MenuValidation.validatePrice;
-import static com.pragma.restaurant.validation.MenuValidation.validateRestaurant;
 
-public class ClientService implements BaseService<ClientDTO,Client> {
+@Service
+public class ClientService implements BaseService<ClientResponseDTO,Client> {
 
     private final ClientRepository clientRepository;
 
