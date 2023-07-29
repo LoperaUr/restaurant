@@ -26,7 +26,7 @@ public class Order {
     private StateOrder orderState = StateOrder.PENDING;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "id_order")
     private List<OrderDetails> menuList;
 
     public Integer getIdUser() {

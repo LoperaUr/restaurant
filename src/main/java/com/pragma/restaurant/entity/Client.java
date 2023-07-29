@@ -15,7 +15,6 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "client")
-    @JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

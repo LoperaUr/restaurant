@@ -5,7 +5,6 @@ import com.pragma.restaurant.entity.Menu;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -13,7 +12,6 @@ import java.util.List;
 public interface MenuMapper {
 
     @Mappings({
-            @Mapping(source ="rol",target="rol"),
             @Mapping(source ="price",target="price"),
             @Mapping(source ="description",target="description"),
             @Mapping(source ="image",target="image"),

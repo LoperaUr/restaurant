@@ -15,26 +15,16 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
 
-    @Mappings({
-            @Mapping(source="id",target="id"),
-            @Mapping(source="restaurant",target="restaurant"),
-            @Mapping(source="state",target="state"),
-
-            @Mapping(target = "details",qualifiedByName = "transformListMenuDetails")
-    })
-
     OrderResponseDTO toDto(Order order);
-    List<OrderResponseDTO> toDtoListOrder(List<Order>orderList);
+    List<OrderResponseDTO> toDtoListOrder(List<Order> orderList);
 
     @Named("transformListMenuDetails")
-    default List<OrderDetailDTO>transformListOrderDetails(List<OrderDetails>details){
+    default List<OrderDetailDTO> transformListOrderDetails(List<OrderDetails> details) {
         return details.stream()
                 .map(this::transformOrderDetails)
                 .collect(Collectors.toList());
     }
 
-    @Mapping(target="name",source="Menu.MenuName")
-    @Mapping(target="cantidad",source="cantidad")
     OrderDetailDTO transformOrderDetails(OrderDetails details);
 
 }
