@@ -8,11 +8,13 @@ import com.pragma.restaurant.dto.client.ClientResponseDTO;
 import com.pragma.restaurant.entity.Client;
 
 
+import com.pragma.restaurant.service.ClientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@RestController
+@RequestMapping("api/v1/client")
 public class ClientController {
 
     private final ClientService clientService;

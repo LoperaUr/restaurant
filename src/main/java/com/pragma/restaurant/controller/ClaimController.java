@@ -4,12 +4,22 @@ import com.pragma.restaurant.dto.claim.ClaimDTO;
 import com.pragma.restaurant.dto.claim.ClaimErrorDTO;
 import com.pragma.restaurant.dto.claim.ClaimResponseDTO;
 import com.pragma.restaurant.entity.Claim;
+import com.pragma.restaurant.service.ClaimService;
+import com.pragma.restaurant.service.ClientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@RestController
+@RequestMapping("api/v1/claim")
 public class ClaimController {
+
+    private final ClaimService claimService;
+
+    public ClaimController(ClaimService claimService) {
+        this.claimService = claimService;
+    }
+
 
     @GetMapping("/")
     public ResponseEntity<List<ClaimResponseDTO>> getAll() {
