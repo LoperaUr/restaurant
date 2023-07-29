@@ -1,5 +1,6 @@
 package com.pragma.restaurant.service;
 
+import com.pragma.restaurant.dto.order.OrderDTO;
 import com.pragma.restaurant.dto.order.OrderResponseDTO;
 import com.pragma.restaurant.entity.Menu;
 import com.pragma.restaurant.entity.Order;
@@ -18,7 +19,7 @@ import java.util.Optional;
 import static com.pragma.restaurant.validation.OrderValidation.validateRestaurantAndDetails;
 
 @Service
-public class OrderService implements BaseService<OrderResponseDTO,Order>{
+public class OrderService implements BaseService<OrderDTO,Order>{
     private final OrderRepository orderRepository;
 
     private final OrderMapper orderMapper;
@@ -133,22 +134,22 @@ public class OrderService implements BaseService<OrderResponseDTO,Order>{
 
 
     @Override
-    public List<OrderResponseDTO> searchAll() throws Exception {
+    public List<OrderDTO> searchAll() throws Exception {
         return null;
     }
 
     @Override
-    public OrderResponseDTO searchById(Long id) throws Exception {
+    public OrderDTO searchById(Long id) throws Exception {
         return null;
     }
 
     @Override
-    public OrderResponseDTO create(Order data) throws Exception {
+    public OrderDTO create(Order data) throws Exception {
         return null;
     }
 
     @Override
-    public OrderResponseDTO update(Long id, Order data) throws Exception {
+    public OrderDTO update(Long id, Order data) throws Exception {
         return null;
     }
 

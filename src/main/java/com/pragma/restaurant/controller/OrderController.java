@@ -24,7 +24,7 @@ public class OrderController {
         this.orderService = orderService;
     }
     @GetMapping("/")
-    public ResponseEntity<List<OrderResponseDTO>> getAll() {
+    public ResponseEntity<List<OrderDTO>> getAll() {
         try {
             return ResponseEntity
                     .ok()
@@ -52,7 +52,7 @@ public class OrderController {
     }
 
     @PostMapping("/")
-    ResponseEntity<OrderDTO> create(@RequestBody Menu data) {
+    ResponseEntity<OrderDTO> create(@RequestBody Order data) {
         try {
             return ResponseEntity
                     .ok()
