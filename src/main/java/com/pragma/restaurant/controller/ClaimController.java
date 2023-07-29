@@ -1,32 +1,22 @@
 package com.pragma.restaurant.controller;
 
-import com.pragma.restaurant.dto.menu.MenuDTO;
-import com.pragma.restaurant.dto.menu.MenuErrorDTO;
-import com.pragma.restaurant.dto.menu.MenuResponseDTO;
-import com.pragma.restaurant.dto.order.OrderDTO;
-import com.pragma.restaurant.dto.order.OrderErrorDTO;
-import com.pragma.restaurant.dto.order.OrderResponseDTO;
-import com.pragma.restaurant.entity.Menu;
-import com.pragma.restaurant.service.MenuService;
-import com.pragma.restaurant.service.OrderService;
+import com.pragma.restaurant.dto.claim.ClaimDTO;
+import com.pragma.restaurant.dto.claim.ClaimErrorDTO;
+import com.pragma.restaurant.dto.claim.ClaimResponseDTO;
+import com.pragma.restaurant.entity.Claim;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-public class OrderController {
+public class ClaimController {
 
-    private final OrderService orderService;
-
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
-    }
     @GetMapping("/")
-    public ResponseEntity<List<OrderResponseDTO>> getAll() {
+    public ResponseEntity<List<ClaimResponseDTO>> getAll() {
         try {
             return ResponseEntity
                     .ok()
-                    .body(orderService.searchAll());
+                    .body(ClaimService.searchAll());
         } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
@@ -35,13 +25,13 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<OrderDTO> getById(@PathVariable Long id) {
+    ResponseEntity<ClaimDTO> getById(@PathVariable Long id) {
         try {
             return ResponseEntity
                     .ok()
-                    .body(orderService.searchById(id));
+                    .body(ClaimService.searchById(id));
         } catch (Exception e) {
-            OrderErrorDTO resError = new OrderErrorDTO();
+            ClaimErrorDTO resError = new ClaimErrorDTO();
             resError.setError(e.getMessage());
             return ResponseEntity
                     .badRequest()
@@ -50,13 +40,13 @@ public class OrderController {
     }
 
     @PostMapping("/")
-    ResponseEntity<OrderDTO> create(@RequestBody Menu data) {
+    ResponseEntity<ClaimDTO> create(@RequestBody Claim data) {
         try {
             return ResponseEntity
                     .ok()
-                    .body(orderService.create(data));
+                    .body(ClaimService.create(data));
         } catch (Exception e) {
-            OrderErrorDTO resError = new OrderErrorDTO();
+            ClaimErrorDTO resError = new ClaimErrorDTO();
             resError.setError(e.getMessage());
             return ResponseEntity
                     .badRequest()
@@ -65,13 +55,13 @@ public class OrderController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<OrderDTO> update(@PathVariable Long id, @RequestBody Order data) {
+    ResponseEntity<ClaimDTO> update(@PathVariable Long id, @RequestBody Claim data) {
         try {
             return ResponseEntity
                     .ok()
-                    .body(orderService.update(id, data));
+                    .body(ClaimService.update(id, data));
         } catch (Exception e) {
-            OrderErrorDTO resError = new OrderErrorDTO();
+            ClaimErrorDTO resError = new ClaimErrorDTO();
             resError.setError(e.getMessage());
             return ResponseEntity
                     .badRequest()
@@ -84,7 +74,7 @@ public class OrderController {
         try {
             return ResponseEntity
                     .ok()
-                    .body(orderService.delete(id));
+                    .body(claimService.delete(id));
         } catch (Exception e) {
             return ResponseEntity
                     .badRequest()

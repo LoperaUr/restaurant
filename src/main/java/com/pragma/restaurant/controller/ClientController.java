@@ -1,32 +1,31 @@
 package com.pragma.restaurant.controller;
 
-import com.pragma.restaurant.dto.menu.MenuDTO;
-import com.pragma.restaurant.dto.menu.MenuErrorDTO;
-import com.pragma.restaurant.dto.menu.MenuResponseDTO;
-import com.pragma.restaurant.dto.order.OrderDTO;
-import com.pragma.restaurant.dto.order.OrderErrorDTO;
-import com.pragma.restaurant.dto.order.OrderResponseDTO;
-import com.pragma.restaurant.entity.Menu;
-import com.pragma.restaurant.service.MenuService;
-import com.pragma.restaurant.service.OrderService;
+import com.pragma.restaurant.dto.client.ClientDTO;
+import com.pragma.restaurant.dto.client.ClientErrorDTO;
+import com.pragma.restaurant.dto.client.ClientResponseDTO;
+
+
+import com.pragma.restaurant.entity.Client;
+
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-public class OrderController {
+public class ClientController {
 
-    private final OrderService orderService;
+    private final ClientService clientService;
 
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
+    public ClientController(ClientService clientService) {
+        this.clientService = clientService;
     }
     @GetMapping("/")
-    public ResponseEntity<List<OrderResponseDTO>> getAll() {
+    public ResponseEntity<List<ClientResponseDTO>> getAll() {
         try {
             return ResponseEntity
                     .ok()
-                    .body(orderService.searchAll());
+                    .body(clientService.searchAll());
         } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
@@ -35,13 +34,13 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<OrderDTO> getById(@PathVariable Long id) {
+    ResponseEntity<ClientDTO> getById(@PathVariable Long id) {
         try {
             return ResponseEntity
                     .ok()
-                    .body(orderService.searchById(id));
+                    .body(clientService.searchById(id));
         } catch (Exception e) {
-            OrderErrorDTO resError = new OrderErrorDTO();
+            ClientErrorDTO resError = new ClientErrorDTO();
             resError.setError(e.getMessage());
             return ResponseEntity
                     .badRequest()
@@ -50,13 +49,13 @@ public class OrderController {
     }
 
     @PostMapping("/")
-    ResponseEntity<OrderDTO> create(@RequestBody Menu data) {
+    ResponseEntity<ClientDTO> create(@RequestBody Client data) {
         try {
             return ResponseEntity
                     .ok()
-                    .body(orderService.create(data));
+                    .body(clientService.create(data));
         } catch (Exception e) {
-            OrderErrorDTO resError = new OrderErrorDTO();
+            ClientErrorDTO resError = new ClientErrorDTO();
             resError.setError(e.getMessage());
             return ResponseEntity
                     .badRequest()
@@ -65,13 +64,13 @@ public class OrderController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<OrderDTO> update(@PathVariable Long id, @RequestBody Order data) {
+    ResponseEntity<ClientDTO> update(@PathVariable Long id, @RequestBody Client data) {
         try {
             return ResponseEntity
                     .ok()
-                    .body(orderService.update(id, data));
+                    .body(clientService.update(id, data));
         } catch (Exception e) {
-            OrderErrorDTO resError = new OrderErrorDTO();
+            ClientErrorDTO resError = new ClientErrorDTO();
             resError.setError(e.getMessage());
             return ResponseEntity
                     .badRequest()
@@ -84,7 +83,7 @@ public class OrderController {
         try {
             return ResponseEntity
                     .ok()
-                    .body(orderService.delete(id));
+                    .body(clientService.delete(id));
         } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
