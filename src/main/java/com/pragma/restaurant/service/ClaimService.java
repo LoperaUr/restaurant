@@ -1,8 +1,9 @@
 package com.pragma.restaurant.service;
 
-import com.pragma.restaurant.dto.claim.ClaimDTO;
 import com.pragma.restaurant.dto.claim.ClaimResponseDTO;
 import com.pragma.restaurant.entity.Claim;
+import com.pragma.restaurant.mapper.ClaimMapper;
+import com.pragma.restaurant.repository.ClaimRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,6 +11,15 @@ import java.util.List;
 @Service
 
 public class ClaimService implements BaseService<ClaimResponseDTO, Claim> {
+
+    private final ClaimRepository claimRepository;
+
+    private final ClaimMapper claimMapper;
+
+    public ClaimService(ClaimRepository claimRepository, ClaimMapper claimMapper) {
+        this.claimRepository = claimRepository;
+        this.claimMapper = claimMapper;
+    }
 
     @Override
     public  List<ClaimResponseDTO> searchAll() throws Exception {

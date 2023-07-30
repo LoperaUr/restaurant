@@ -26,7 +26,7 @@ public class ClaimController {
         try {
             return ResponseEntity
                     .ok()
-                    .body(ClaimService.searchAll());
+                    .body(claimService.searchAll());
         } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
@@ -39,7 +39,7 @@ public class ClaimController {
         try {
             return ResponseEntity
                     .ok()
-                    .body(ClaimService.searchById(id));
+                    .body(claimService.searchById(id));
         } catch (Exception e) {
             ClaimErrorDTO resError = new ClaimErrorDTO();
             resError.setError(e.getMessage());
@@ -54,7 +54,7 @@ public class ClaimController {
         try {
             return ResponseEntity
                     .ok()
-                    .body(ClaimService.create(data));
+                    .body(claimService.create(data));
         } catch (Exception e) {
             ClaimErrorDTO resError = new ClaimErrorDTO();
             resError.setError(e.getMessage());
@@ -69,7 +69,7 @@ public class ClaimController {
         try {
             return ResponseEntity
                     .ok()
-                    .body(ClaimService.update(id, data));
+                    .body(claimService.update(id, data));
         } catch (Exception e) {
             ClaimErrorDTO resError = new ClaimErrorDTO();
             resError.setError(e.getMessage());
