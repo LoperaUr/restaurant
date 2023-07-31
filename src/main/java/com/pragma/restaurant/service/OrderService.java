@@ -126,7 +126,9 @@ public class OrderService implements BaseService<OrderDTO,Order>{
                 throw new Exception("No existe la orden");
             }
             Order order = orderOptional.get();
-            order.setOrderState(StateOrder.DELIVERED);
+            if(data.getOrderState().equals(StateOrder.READY)){
+                order.setOrderState(StateOrder.DELIVERED);
+            }
             return orderMapper.toDto(orderRepository.save(order));
 
         } catch (Exception e) {
