@@ -15,5 +15,6 @@ import javax.swing.plaf.nimbus.State;
 public interface OrderRepository extends JpaRepository<Order, Long> {
     Page<Order> findByRestaurantAndOrderState(String restaurant, StateOrder stateOrder, Pageable pageable);
 
+
     Order findByUserOrder(Client id);
 }
