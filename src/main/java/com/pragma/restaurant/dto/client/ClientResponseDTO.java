@@ -1,32 +1,27 @@
 package com.pragma.restaurant.dto.client;
 
+import com.pragma.restaurant.entity.Order;
+
+import java.util.List;
+
 public class ClientResponseDTO extends ClientDTO {
 
-    private Long id;
-    private String nombre;
-    private String orderUser;
+    private String name;
+    private List<Order> orderUser;
 
-    public Long getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getOrderUser() {
+    public List<Order> getOrderUser() {
         return orderUser;
     }
 
-    public void setOrderUser(String orderUser) {
+    public void setOrderUser(List<Order> orderUser) {
         this.orderUser = orderUser;
     }
 }

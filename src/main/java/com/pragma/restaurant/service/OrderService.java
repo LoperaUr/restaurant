@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.pragma.restaurant.validation.OrderValidation.validateRestaurantAndDetails;
+import static com.pragma.restaurant.validation.OrderValidation.validateRestaurantIsSame;
 
 @Service
 public class OrderService implements BaseService<OrderDTO,Order>{
@@ -48,9 +49,10 @@ public class OrderService implements BaseService<OrderDTO,Order>{
             if (orderRepository.findByUserOrder(order.getUserOrder()).getOrderState().equals(StateOrder.READY)) {
                 throw new Exception("El usuario ya tiene una orden LISTA");
             }
-            /*if (validateRestaurantIsSame(order, order.getRestaurant())) {
-                throw new Exception("La orden no pertenece al restaurante");
-            }*/
+            if (validateRestaurantIsSame(order)) {
+                throw new Exception("Los platos de la orden deben ser del mismo restaurante");
+            }
+
             if (validateRestaurantAndDetails(order)) {
                 throw new Exception("La sede y los detalles de la orden son obligatorios");
             }

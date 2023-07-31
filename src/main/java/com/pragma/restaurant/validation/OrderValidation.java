@@ -1,6 +1,9 @@
 package com.pragma.restaurant.validation;
 
 import com.pragma.restaurant.entity.Order;
+import com.pragma.restaurant.entity.OrderDetails;
+
+import java.util.List;
 
 public abstract class OrderValidation {
     public static Boolean validateRestaurantAndDetails(Order order) {
@@ -8,8 +11,15 @@ public abstract class OrderValidation {
                 order.getOrderState() == null || order.getMenuList().isEmpty();
     }
 
-    /* public static Boolean validateRestaurantIsSame(Order order, String restaurant) {
-        return !order.getRestaurant().equals(restaurant);
-    }*/
-
+    // metodo que valida que todos los platos de la orden sean del mismo restaurant
+    public static Boolean validateRestaurantIsSame(Order order) {
+        String restaurantVal = order.getRestaurant();
+        List<OrderDetails> menuList = order.getMenuList();
+        for (OrderDetails detail : menuList) {
+            if (!detail.getMenuId().getRestaurant().equals(restaurantVal)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
