@@ -1,19 +1,17 @@
 package com.pragma.restaurant.controller;
 
-import com.pragma.restaurant.dto.menu.MenuDTO;
-import com.pragma.restaurant.dto.menu.MenuErrorDTO;
-import com.pragma.restaurant.dto.menu.MenuResponseDTO;
 import com.pragma.restaurant.dto.order.OrderDTO;
 import com.pragma.restaurant.dto.order.OrderErrorDTO;
 import com.pragma.restaurant.dto.order.OrderResponseDTO;
-import com.pragma.restaurant.entity.Menu;
-
 import com.pragma.restaurant.entity.Order;
 import com.pragma.restaurant.service.OrderService;
+import com.pragma.restaurant.util.StateOrder;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/order")
 public class OrderController {
@@ -23,33 +21,7 @@ public class OrderController {
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
-    @GetMapping("/")
-    public ResponseEntity<List<OrderDTO>> getAll() {
-        try {
-            return ResponseEntity
-                    .ok()
-                    .body(orderService.searchAll());
-        } catch (Exception e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(null);
-        }
-    }
 
-    @GetMapping("/{id}")
-    ResponseEntity<OrderDTO> getById(@PathVariable Long id) {
-        try {
-            return ResponseEntity
-                    .ok()
-                    .body(orderService.searchById(id));
-        } catch (Exception e) {
-            OrderErrorDTO resError = new OrderErrorDTO();
-            resError.setError(e.getMessage());
-            return ResponseEntity
-                    .badRequest()
-                    .body(resError);
-        }
-    }
 
     @PostMapping("/")
     ResponseEntity<OrderDTO> create(@RequestBody Order data) {
@@ -91,6 +63,29 @@ public class OrderController {
             return ResponseEntity
                     .badRequest()
                     .body(false);
+        }
+    }
+
+    @GetMapping("/")
+    ResponseEntity<List<OrderResponseDTO>> filterByStateAndRestaurant(
+            @RequestParam Character rol,
+            @RequestParam String restaurant,
+            @RequestParam StateOrder state,
+            @RequestParam int size
+    ) {
+        try {
+            Page<OrderResponseDTO> pageOrders = orderService.getListOrdersByStateAndRestaurant(rol, restaurant,  state, size);
+            List<OrderResponseDTO> orders = pageOrders.getContent();
+
+            return ResponseEntity
+                    .ok()
+                    .body(orders);
+        } catch (Exception e) {
+            OrderErrorDTO resError = new OrderErrorDTO();
+            resError.setError(e.getMessage());
+            return ResponseEntity
+                    .badRequest()
+                    .body(null);
         }
     }
 }
