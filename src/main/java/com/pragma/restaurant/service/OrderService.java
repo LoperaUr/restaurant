@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -67,7 +68,8 @@ public class OrderService implements BaseService<OrderDTO,Order>{
         }
     }
 
-    public Page<OrderResponseDTO> getListOrdersByStateAndRestaurant(Character rol, String restaurant, StateOrder state, int size) throws Exception {
+    public Page<OrderResponseDTO> getListOrdersByStateAndRestaurant(Character rol, String restaurant, StateOrder state, int size)
+            throws Exception {
         try {
             if (rol != ('A')) {
                 throw new Exception("No tiene permisos para listar las ordenes");
@@ -79,6 +81,20 @@ public class OrderService implements BaseService<OrderDTO,Order>{
             throw new Exception(e.getMessage());
         }
     }
+
+    //listar solo por estado
+     public Page<OrderResponseDTO>getListOrderByState(Character rol, StateOrder state, int size) throws Exception{
+        try{
+            if(rol !=('A')){
+                throw new Exception("No tiene permisos para listar las ordenes");
+            }
+            Pageable pageable = Pageable.ofSize(size);
+            Page<Order> orders = orderRepository.findByOrderState(state,pageable);
+            return orders.map(orderMapper::toDto);
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+     }
 
     public OrderResponseDTO updateOrderStateToInPreparation(Long id, Order data) throws Exception {
         try {

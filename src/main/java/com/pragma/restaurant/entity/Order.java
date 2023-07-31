@@ -31,6 +31,9 @@ public class Order {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
     private List<OrderDetails> menuList;
 
+    @OneToMany
+    private Employee assignedEmployee;
+
     public Client getUserOrder() {
         return userOrder;
     }
