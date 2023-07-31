@@ -31,6 +31,9 @@ public class Order {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
     private List<OrderDetails> menuList;
 
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "orderId")
+    private Claim claim;
+
     public Client getUserOrder() {
         return userOrder;
     }
@@ -87,4 +90,11 @@ public class Order {
         return id;
     }
 
+    public Claim getClaim() {
+        return claim;
+    }
+
+    public void setClaim(Claim claim) {
+        this.claim = claim;
+    }
 }

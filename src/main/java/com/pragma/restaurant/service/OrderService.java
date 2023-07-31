@@ -148,13 +148,9 @@ public class OrderService implements BaseService<OrderDTO,Order>{
                 }else{
                     Order order = orderOptional.get();
                     order.setOrderState(StateOrder.CANCELED);
+                    order.getClaim().setDescription(reason);
                     return orderMapper.toDto(orderRepository.save(order));
 
-
-                    /*Optional<Claim> claimOptional = claimRepository.findById(id);
-                    claimOptional.get();
-                    Claim claim;
-                    claim.setDescription(reason);*/
 
 
                 }

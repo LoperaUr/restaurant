@@ -16,7 +16,9 @@ public class Claim {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long id_order;
+    @OneToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order orderId;
 
     private String restaurant;
 
@@ -27,12 +29,12 @@ public class Claim {
     private String reason;
 
 
-    public Long getId_order() {
-        return id_order;
+    public Order getOrderId() {
+        return orderId;
     }
 
-    public void setId_order(Long id_order) {
-        this.id_order = id_order;
+    public void setOrderId(Order orderId) {
+        this.orderId = orderId;
     }
 
     public String getRestaurant() {
