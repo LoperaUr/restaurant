@@ -1,17 +1,15 @@
 package com.pragma.restaurant.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.pragma.restaurant.util.StateOrder;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Table(name = "orders")
 public class Order {
     @Id
@@ -19,24 +17,41 @@ public class Order {
     private Long id;
     private Character rolRequest;
     private Character rolAp;
+
+    @Column(name = "restaurant", nullable = false)
     private String restaurant;
 
-    @ManyToOne
-    @JoinColumn(name = "id_user", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_user")
+    @JsonBackReference
     private Client userOrder;
 
     @Enumerated(EnumType.STRING)
     private StateOrder orderState = StateOrder.PENDING;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
+    @JsonManagedReference
     private List<OrderDetails> menuList;
 
-    public Client getUserOrder() {
-        return userOrder;
+    public Order(Long id, Character rolRequest, Character rolAp, String restaurant, Client userOrder, StateOrder orderState, List<OrderDetails> menuList) {
+        this.id = id;
+        this.rolRequest = rolRequest;
+        this.rolAp = rolAp;
+        this.restaurant = restaurant;
+        this.userOrder = userOrder;
+        this.orderState = orderState;
+        this.menuList = menuList;
     }
 
-    public void setUserOrder(Client idUser) {
-        this.userOrder = idUser;
+    public Order() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Character getRolRequest() {
@@ -63,12 +78,12 @@ public class Order {
         this.restaurant = restaurant;
     }
 
-    public List<OrderDetails> getMenuList() {
-        return menuList;
+    public Client getUserOrder() {
+        return userOrder;
     }
 
-    public void setMenuList(List<OrderDetails> menuList) {
-        this.menuList = menuList;
+    public void setUserOrder(Client userOrder) {
+        this.userOrder = userOrder;
     }
 
     public StateOrder getOrderState() {
@@ -79,12 +94,11 @@ public class Order {
         this.orderState = orderState;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public List<OrderDetails> getMenuList() {
+        return menuList;
     }
 
-    public Long getId() {
-        return id;
+    public void setMenuList(List<OrderDetails> menuList) {
+        this.menuList = menuList;
     }
-
 }

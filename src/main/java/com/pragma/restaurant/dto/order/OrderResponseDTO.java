@@ -1,13 +1,14 @@
 package com.pragma.restaurant.dto.order;
 
 import com.pragma.restaurant.dto.orderDetail.OrderDetailDTO;
+import com.pragma.restaurant.util.StateOrder;
 
 import java.util.List;
 
-public class OrderResponseDTO {
+public class OrderResponseDTO extends OrderDTO{
     private Long id;
     private String restaurant;
-    private String orderState;
+    private StateOrder orderState;
     private List<OrderDetailDTO> detailDTOS;
     
     public Long getId() {
@@ -34,11 +35,19 @@ public class OrderResponseDTO {
         this.restaurant = restaurant;
     }
 
-    public String getOrderState() {
+    public StateOrder getOrderState() {
         return orderState;
     }
 
-    public void setOrderState(String orderState) {
+    public void setOrderState(StateOrder orderState) {
         this.orderState = orderState;
+    }
+
+    public List<OrderDetailDTO> getDetailDTOS() {
+        return detailDTOS;
+    }
+
+    public void setDetailDTOS(List<OrderDetailDTO> detailDTOS) {
+        this.detailDTOS = detailDTOS;
     }
 }

@@ -1,8 +1,12 @@
 package com.pragma.restaurant.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
+@Table(name = "order_details")
 public class OrderDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,8 +16,9 @@ public class OrderDetails {
     @JoinColumn(name = "menu_id", nullable = false)
     private Menu menuId;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "order_id", nullable = false)
+    @JsonBackReference
     private Order orderId;
 
     @Column(name = "quantity", nullable = false)

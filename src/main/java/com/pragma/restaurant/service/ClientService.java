@@ -16,7 +16,7 @@ import java.util.Optional;
 
 
 @Service
-public class ClientService implements BaseService<ClientResponseDTO,Client> {
+public class ClientService implements BaseService<ClientResponseDTO, Client> {
 
     private final ClientRepository clientRepository;
 
@@ -28,7 +28,7 @@ public class ClientService implements BaseService<ClientResponseDTO,Client> {
         this.clientMapper = clientMapper;
     }
 
-    @Override
+
     public List<ClientResponseDTO> searchAll() throws Exception {
         try {
             return clientMapper.toDtoList(clientRepository.findAll());
@@ -37,16 +37,7 @@ public class ClientService implements BaseService<ClientResponseDTO,Client> {
         }
     }
 
-    @Override
-    public ClientResponseDTO searchById(Long id) throws Exception {
-        try {
-            return clientMapper.ToDto(clientRepository.findById(id).get());
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
-    }
 
-    @Override
     public ClientResponseDTO create(Client data) throws Exception {
         try {
 
@@ -56,7 +47,7 @@ public class ClientService implements BaseService<ClientResponseDTO,Client> {
         }
     }
 
-    @Override
+
     public ClientResponseDTO update(Long id, Client data) throws Exception {
         try {
             Optional<Client> clientOptional = clientRepository.findById(id);
@@ -74,8 +65,6 @@ public class ClientService implements BaseService<ClientResponseDTO,Client> {
     }
 
 
-
-    @Override
     public boolean delete(Long id) throws Exception {
         try {
             Optional<Client> clientOptional = clientRepository.findById(id);
