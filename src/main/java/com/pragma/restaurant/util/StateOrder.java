@@ -4,6 +4,7 @@ public enum StateOrder {
     PENDING,
     IN_PREPARATION,
     READY,
-    DELIVERED
+    DELIVERED,
+    CANCELED
 
 }

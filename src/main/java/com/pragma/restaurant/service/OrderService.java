@@ -2,10 +2,12 @@ package com.pragma.restaurant.service;
 
 import com.pragma.restaurant.dto.order.OrderDTO;
 import com.pragma.restaurant.dto.order.OrderResponseDTO;
+import com.pragma.restaurant.entity.Claim;
 import com.pragma.restaurant.entity.Menu;
 import com.pragma.restaurant.entity.Order;
 import com.pragma.restaurant.entity.OrderDetails;
 import com.pragma.restaurant.mapper.OrderMapper;
+import com.pragma.restaurant.repository.ClaimRepository;
 import com.pragma.restaurant.repository.MenuRepository;
 import com.pragma.restaurant.repository.OrderRepository;
 import com.pragma.restaurant.util.StateOrder;
@@ -32,6 +34,7 @@ public class OrderService implements BaseService<OrderDTO,Order>{
     public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, MenuRepository menuRepository) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
+        //this.claimRepository = claimRepository;
         this.menuRepository = menuRepository;
     }
 
@@ -133,6 +136,37 @@ public class OrderService implements BaseService<OrderDTO,Order>{
             throw new Exception(e.getMessage());
         }
     }
+// historia 10 sin reclamo ni motivo
+    public OrderResponseDTO toCancelOrders(Long id,String reason)throws Exception{
+        try {
+            Optional<Order> orderOptional = orderRepository.findById(id);
+            if(orderOptional.get().getOrderState()!=StateOrder.PENDING) {
+                throw new Exception("Lo sentimos, tu pedido ya está en preparación y no puede cancelarse");
+            }
+                if (orderOptional.isEmpty()) {
+                    throw new Exception("No existe la orden");
+                }else{
+                    Order order = orderOptional.get();
+                    order.setOrderState(StateOrder.CANCELED);
+                    return orderMapper.toDto(orderRepository.save(order));
+
+
+                    /*Optional<Claim> claimOptional = claimRepository.findById(id);
+                    claimOptional.get();
+                    Claim claim;
+                    claim.setDescription(reason);*/
+
+
+                }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+
 
 
     @Override
