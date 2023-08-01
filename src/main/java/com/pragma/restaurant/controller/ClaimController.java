@@ -21,33 +21,7 @@ public class ClaimController {
     }
 
 
-    @GetMapping("/")
-    public  ResponseEntity<List<ClaimResponseDTO>> getAll() {
-        try {
-            return ResponseEntity
-                    .ok()
-                    .body(claimService.searchAll());
-        } catch (Exception e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(null);
-        }
-    }
 
-    @GetMapping("/{id}")
-    ResponseEntity<ClaimDTO> getById(@PathVariable Long id) {
-        try {
-            return ResponseEntity
-                    .ok()
-                    .body(claimService.searchById(id));
-        } catch (Exception e) {
-            ClaimErrorDTO resError = new ClaimErrorDTO();
-            resError.setError(e.getMessage());
-            return ResponseEntity
-                    .badRequest()
-                    .body(resError);
-        }
-    }
 
     @PostMapping("/")
     ResponseEntity<ClaimDTO> create(@RequestBody Claim data) {
@@ -64,20 +38,7 @@ public class ClaimController {
         }
     }
 
-    @PutMapping("/{id}")
-    ResponseEntity<ClaimDTO> update(@PathVariable Long id, @RequestBody Claim data) {
-        try {
-            return ResponseEntity
-                    .ok()
-                    .body(claimService.update(id, data));
-        } catch (Exception e) {
-            ClaimErrorDTO resError = new ClaimErrorDTO();
-            resError.setError(e.getMessage());
-            return ResponseEntity
-                    .badRequest()
-                    .body(resError);
-        }
-    }
+
 
     @DeleteMapping("/{id}")
     ResponseEntity<Boolean> delete(@PathVariable Long id) {

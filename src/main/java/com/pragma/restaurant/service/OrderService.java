@@ -146,5 +146,30 @@ public class OrderService implements BaseService<OrderDTO, Order> {
         }
     }
 
+    public OrderResponseDTO toCancelOrders(Long id,String reason)throws Exception{
+        try {
+            Optional<Order> orderOptional = orderRepository.findById(id);
+            if(orderOptional.get().getOrderState()!=StateOrder.PENDING) {
+                throw new Exception("Lo sentimos, tu pedido ya está en preparación y no puede cancelarse");
+            }
+            if (orderOptional.isEmpty()) {
+                throw new Exception("No existe la orden");
+            }else{
+                Order order = orderOptional.get();
+                order.setOrderState(StateOrder.CANCELLED);
+                return orderMapper.toDto(orderRepository.save(order));
+
+
+
+
+
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
 
 }
