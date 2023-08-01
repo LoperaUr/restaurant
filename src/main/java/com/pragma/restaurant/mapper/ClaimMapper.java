@@ -13,4 +13,5 @@ public interface ClaimMapper {
 
     List<ClaimResponseDTO> toDtoList(List<Claim> claim);
 
+    ClaimResponseDTO toDto(Claim save);
 }
