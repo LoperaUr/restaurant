@@ -1,9 +1,11 @@
 package com.pragma.restaurant.dto.claim;
 
+import com.pragma.restaurant.entity.Order;
+
 public class ClaimResponseDTO extends ClaimDTO{
 
     private Long id;
-    private Long id_order;
+    private Order orderId;
 
     private String restaurant;
 
@@ -21,12 +23,12 @@ public class ClaimResponseDTO extends ClaimDTO{
         this.id = id;
     }
 
-    public Long getId_order() {
-        return id_order;
+    public Order getIdOrder() {
+        return orderId;
     }
 
-    public void setId_order(Long id_order) {
-        this.id_order = id_order;
+    public void setIdOrder(Order id_order) {
+        this.orderId = id_order;
     }
 
     public String getRestaurant() {
