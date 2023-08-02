@@ -15,11 +15,15 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
 
+    @Mappings({
+            @Mapping(target = "menuList", qualifiedByName = "transformListMenuDetails")
+    })
+
     OrderResponseDTO toDto(Order order);
     List<OrderResponseDTO> toDtoListOrder(List<Order> orderList);
 
     @Named("transformListMenuDetails")
-    default List<OrderDetailDTO> transformListOrderDetails(List<OrderDetails> details) {
+    default List<OrderDetailDTO> transformListMenuDetails(List<OrderDetails> details) {
         return details.stream()
                 .map(this::transformOrderDetails)
                 .collect(Collectors.toList());
