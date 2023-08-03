@@ -65,7 +65,6 @@ public class OrderService implements BaseService<OrderDTO, Order> {
 
             }
 
-
             OrderResponseDTO orderResponseDTO = orderMapper.toDto(orderRepository.save(order));
             for (OrderDetails
                     detail :

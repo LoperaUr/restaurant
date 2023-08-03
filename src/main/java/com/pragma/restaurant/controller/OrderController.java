@@ -49,7 +49,6 @@ public class OrderController {
         try {
             Page<OrderResponseDTO> pageOrders = orderService.getListOrdersByStateAndRestaurant(rol, restaurant,  state, size);
             List<OrderResponseDTO> orders = pageOrders.getContent();
-
             return ResponseEntity
                     .ok()
                     .body(orders);
