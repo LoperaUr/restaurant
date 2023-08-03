@@ -1,0 +1,24 @@
+
+{
+  "rolRequest": "C",
+  "rolAp": "C",
+  "restaurant": "NombreRestaurante",
+  "userOrder": {
+    "id": 1
+  },
+  "orderState": "PENDING",
+  "menuList": [
+    {
+      "menuId": {
+        "id": 1
+      },
+      "quantity": 2
+    },
+    {
+      "menuId": {
+        "id": 2
+      },
+      "quantity": 3
+    }
+  ]
+}
