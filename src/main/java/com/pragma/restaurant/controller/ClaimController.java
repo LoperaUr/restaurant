@@ -2,14 +2,11 @@ package com.pragma.restaurant.controller;
 
 import com.pragma.restaurant.dto.claim.ClaimDTO;
 import com.pragma.restaurant.dto.claim.ClaimErrorDTO;
-import com.pragma.restaurant.dto.claim.ClaimResponseDTO;
 import com.pragma.restaurant.entity.Claim;
 import com.pragma.restaurant.service.ClaimService;
-import com.pragma.restaurant.service.ClientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 @RestController
 @RequestMapping("api/v1/claim")
 public class ClaimController {
@@ -20,15 +17,12 @@ public class ClaimController {
         this.claimService = claimService;
     }
 
-
-
-
     @PostMapping("/")
     ResponseEntity<ClaimDTO> create(@RequestBody Claim data) {
         try {
             return ResponseEntity
                     .ok()
-                    .body(claimService.create(data));
+                    .body(claimService.createClaim(data));
         } catch (Exception e) {
             ClaimErrorDTO resError = new ClaimErrorDTO();
             resError.setError(e.getMessage());
@@ -37,7 +31,6 @@ public class ClaimController {
                     .body(resError);
         }
     }
-
 
 
     @DeleteMapping("/{id}")

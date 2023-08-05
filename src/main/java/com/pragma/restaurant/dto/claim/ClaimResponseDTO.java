@@ -13,7 +13,6 @@ public class ClaimResponseDTO extends ClaimDTO{
 
     private String claim_state;
 
-    private String reason;
 
     public Long getId() {
         return id;
@@ -55,11 +54,4 @@ public class ClaimResponseDTO extends ClaimDTO{
         this.claim_state = claim_state;
     }
 
-    public String getReason() {
-        return reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
 }
