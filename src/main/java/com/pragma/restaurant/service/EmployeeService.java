@@ -1,7 +1,9 @@
 package com.pragma.restaurant.service;
 
 
+import com.pragma.restaurant.dto.client.ClientResponseDTO;
 import com.pragma.restaurant.dto.employee.EmployeeResponseDTO;
+import com.pragma.restaurant.entity.Client;
 import com.pragma.restaurant.entity.Employee;
 import com.pragma.restaurant.mapper.EmployeeMapper;
 ;
@@ -10,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class EmployeeService {
+public class EmployeeService implements BaseService<EmployeeResponseDTO, Employee> {
 
     private final EmployeeRepository employeeRepository;
 
@@ -25,7 +27,7 @@ public class EmployeeService {
     public EmployeeResponseDTO create(Employee employee) throws Exception{
         try {
 
-            return employeeMapper.toEmployeeDTO(employeeRepository.save(employee));
+            return employeeMapper.ToDto(employeeRepository.save(employee));
         }catch (Exception e){
 
             throw new Exception(e.getMessage());
@@ -36,7 +38,7 @@ public class EmployeeService {
     public List<EmployeeResponseDTO> searchAll()throws Exception{
         try {
 
-            return employeeMapper.toEmployeesDTO(employeeRepository.findAll());
+            return employeeMapper.ToDtoList(employeeRepository.findAll());
         }catch (Exception e){
 
             throw new Exception(e.getMessage());

@@ -38,17 +38,27 @@ public class Order {
     @JsonManagedReference
     private List<OrderDetails> menuList;
 
-    public Order(Long id, Character rolRequest, Character rolAp, String restaurant, Client userOrder, StateOrder orderState, List<OrderDetails> menuList) {
+
+    public Order() {
+    }
+
+    public Order(Long id, Character rolRequest, Character rolAp, String restaurant, Client userOrder, Employee employeeId, StateOrder orderState, List<OrderDetails> menuList) {
         this.id = id;
         this.rolRequest = rolRequest;
         this.rolAp = rolAp;
         this.restaurant = restaurant;
         this.userOrder = userOrder;
+        this.employeeId = employeeId;
         this.orderState = orderState;
         this.menuList = menuList;
     }
 
-    public Order() {
+    public Employee getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Employee employeeId) {
+        this.employeeId = employeeId;
     }
 
     public Long getId() {
@@ -90,6 +100,8 @@ public class Order {
     public void setUserOrder(Client userOrder) {
         this.userOrder = userOrder;
     }
+
+
 
     public StateOrder getOrderState() {
         return orderState;

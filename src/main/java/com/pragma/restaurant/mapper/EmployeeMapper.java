@@ -14,8 +14,7 @@ public interface EmployeeMapper {
 
 
 
-    // Método que convierte una lista de objetos Employee a una lista de objetos ResponseEmployeeDTO
-    List<EmployeeResponseDTO> toEmployeesDTO(List<Employee> employees);
+    EmployeeResponseDTO ToDto(Employee employeeId);
 
-    EmployeeResponseDTO toEmployeeDTO(Employee employee);
+    List<EmployeeResponseDTO> ToDtoList(List<Employee> employeeId);
 }

@@ -14,12 +14,12 @@ public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "employee_id")
-    private Long employeeId;
+    @Column(name = "Id")
+    private Long id;
 
-    @Column(name = "name_employee")
-    private String nameEmployee;
-    private String password;
+    @Column(name = "name")
+    private String name;
+
     @OneToMany(mappedBy = "employeeId")
     @JsonManagedReference
     @JsonIgnore
@@ -28,35 +28,27 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(Long employeeId, String nameEmployee, String password, List<Order> orders) {
-        this.employeeId = employeeId;
-        this.nameEmployee = nameEmployee;
-        this.password = password;
+
+    public Employee(Long id, String name, List<Order> orders) {
+        this.id = id;
+        this.name = name;
         this.orders = orders;
     }
 
-    public Long getEmployeeId() {
-        return employeeId;
+    public Long getId() {
+        return id;
     }
 
-    public void setEmployeeId(Long employeeId) {
-        this.employeeId = employeeId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getNameEmployee() {
-        return nameEmployee;
+    public String getName() {
+        return name;
     }
 
-    public void setNameEmployee(String nameEmployee) {
-        this.nameEmployee = nameEmployee;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<Order> getOrders() {

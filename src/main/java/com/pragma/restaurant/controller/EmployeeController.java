@@ -23,6 +23,20 @@ public class EmployeeController {
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
+    @PostMapping("/")
+    ResponseEntity<EmployeeDTO> create(@RequestBody Employee employee){
+        try {
+            return ResponseEntity
+                    .ok()
+                    .body(employeeService.create(employee));
+        } catch (Exception e) {
+            EmployeeErrorDTO resError = new EmployeeErrorDTO();
+            resError.setError(e.getMessage());
+            return ResponseEntity
+                    .badRequest()
+                    .body(resError);
+        }
+    }
 
     @GetMapping("/")
     public ResponseEntity<List<EmployeeResponseDTO>> getAll() {
@@ -37,20 +51,7 @@ public class EmployeeController {
         }
     }
 
-    @GetMapping("/")
-   ResponseEntity<EmployeeDTO> create(@RequestBody Employee employee){
-        try {
-            return ResponseEntity
-                    .ok()
-                    .body(employeeService.create(employee));
-        } catch (Exception e) {
-            EmployeeErrorDTO resError = new EmployeeErrorDTO();
-            resError.setError(e.getMessage());
-            return ResponseEntity
-                    .badRequest()
-                    .body(resError);
-        }
-    }
+
 
 
 }
