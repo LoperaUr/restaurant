@@ -26,6 +26,11 @@ public class Order {
     @JsonBackReference
     private Client userOrder;
 
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "employeeId")
+    private Employee employeeId = null;
+
     @Enumerated(EnumType.STRING)
     private StateOrder orderState = StateOrder.PENDING;
 
