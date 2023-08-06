@@ -65,5 +65,29 @@ public class OrderController {
         }
     }
 
+    @GetMapping("/")
+    ResponseEntity<List<OrderResponseDTO>> filterByState(
+            @RequestParam Character rol,
+            @RequestParam String restaurant,
+            @RequestParam StateOrder state,
+            @RequestParam int size,
+            @RequestParam Employee EmployeeId
+
+    ) {
+        try {
+            Page<OrderResponseDTO> pageOrders = orderService.getListOrdersByState(rol, state, size);
+            List<OrderResponseDTO> orders = pageOrders.getContent();
+            return ResponseEntity
+                    .ok()
+                    .body(orders);
+        } catch (Exception e) {
+            OrderErrorDTO resError = new OrderErrorDTO();
+            resError.setError(e.getMessage());
+            return ResponseEntity
+                    .badRequest()
+                    .body(null);
+        }
+    }
+
 
 }

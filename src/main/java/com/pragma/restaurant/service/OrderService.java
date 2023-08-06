@@ -91,6 +91,21 @@ public class OrderService implements BaseService<OrderDTO, Order> {
         }
     }
 
+    public Page<OrderResponseDTO> getListOrdersByState(Character rol, StateOrder state, int size) throws Exception {
+        try {
+            if (rol != ('A')) {
+                throw new Exception("No tiene permisos para listar las ordenes");
+            }
+            Pageable pageable = Pageable.ofSize(size);
+            Page<Order> orders = orderRepository.findOrderByState(state, pageable);
+            return orders.map(orderMapper::toDto);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+
+
     public OrderResponseDTO updateOrderStateToInPreparation(Long id, Order data) throws Exception {
         try {
             if (data.getRolAp() != ('A')) {
@@ -178,8 +193,7 @@ public class OrderService implements BaseService<OrderDTO, Order> {
 
 
     }
-    @Service
-    public class PedidoService {
+
 
 
         public void assignEmployee(Long idOrder, Long idEmployee)throws Exception {
@@ -195,5 +209,7 @@ public class OrderService implements BaseService<OrderDTO, Order> {
 
             }
         }
-    }
+
 }
+
+
