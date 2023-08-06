@@ -5,13 +5,15 @@ import com.pragma.restaurant.entity.Claim;
 import com.pragma.restaurant.mapper.ClaimMapper;
 import com.pragma.restaurant.repository.ClaimRepository;
 import com.pragma.restaurant.repository.OrderRepository;
+import com.pragma.restaurant.util.StateClaim;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static com.pragma.restaurant.validation.ClaimValidation.validateDescription;
 
 @Service
-
-public class ClaimService implements BaseService<ClaimResponseDTO, Claim> {
+public class ClaimService {
 
     private final ClaimRepository claimRepository;
 
@@ -19,10 +21,10 @@ public class ClaimService implements BaseService<ClaimResponseDTO, Claim> {
 
     private final ClaimMapper claimMapper;
 
-    public ClaimService(ClaimRepository claimRepository, ClaimMapper claimMapper, ClaimRepository claimRepository1, OrderRepository orderRepository, ClaimMapper claimMapper1) {
-        this.claimRepository = claimRepository1;
+    public ClaimService(ClaimRepository claimRepository, OrderRepository orderRepository, ClaimMapper claimMapper) {
+        this.claimRepository = claimRepository;
         this.orderRepository = orderRepository;
-        this.claimMapper = claimMapper1;
+        this.claimMapper = claimMapper;
     }
 
 
@@ -36,6 +38,14 @@ public class ClaimService implements BaseService<ClaimResponseDTO, Claim> {
             }
             data.setRestaurant(orderRepository.findById(data.getOrderId().getId()).get().getRestaurant());
             return claimMapper.toDto(claimRepository.save(data));
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public List<ClaimResponseDTO> getClaimsPending() throws Exception {
+        try {
+            return claimMapper.toDtoList(claimRepository.findAllByClaimState(StateClaim.PENDING));
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

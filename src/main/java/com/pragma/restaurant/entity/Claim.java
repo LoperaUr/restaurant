@@ -12,7 +12,7 @@ public class Claim {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "order_id", nullable = false)
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
     private Order orderId;
 
     private String restaurant;
@@ -20,17 +20,17 @@ public class Claim {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    private StateClaim claim_state = StateClaim.PENDING;
+    private StateClaim claimState = StateClaim.PENDING;
 
     public Claim() {
     }
 
-    public Claim(Long id, Order orderId, String restaurant, String description, StateClaim claim_state) {
+    public Claim(Long id, Order orderId, String restaurant, String description, StateClaim claimState) {
         this.id = id;
         this.orderId = orderId;
         this.restaurant = restaurant;
         this.description = description;
-        this.claim_state = claim_state;
+        this.claimState = claimState;
     }
 
     public Long getId() {
@@ -65,12 +65,12 @@ public class Claim {
         this.description = description;
     }
 
-    public StateClaim getClaim_state() {
-        return claim_state;
+    public StateClaim getClaimState() {
+        return claimState;
     }
 
-    public void setClaim_state(StateClaim claim_state) {
-        this.claim_state = claim_state;
+    public void setClaimState(StateClaim claim_state) {
+        this.claimState = claim_state;
     }
 }
 
