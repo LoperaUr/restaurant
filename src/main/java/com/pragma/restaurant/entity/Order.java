@@ -7,6 +7,7 @@ import com.pragma.restaurant.util.StateOrder;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Random;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
@@ -33,7 +34,9 @@ public class Order {
     @JsonManagedReference
     private List<OrderDetails> menuList;
 
-    public Order(Long id, Character rolRequest, Character rolAp, String restaurant, Client userOrder, StateOrder orderState, List<OrderDetails> menuList) {
+    private String uniqueId = null;
+
+    public Order(Long id, Character rolRequest, Character rolAp, String restaurant, Client userOrder, StateOrder orderState, List<OrderDetails> menuList, String uniqueId) {
         this.id = id;
         this.rolRequest = rolRequest;
         this.rolAp = rolAp;
@@ -41,6 +44,7 @@ public class Order {
         this.userOrder = userOrder;
         this.orderState = orderState;
         this.menuList = menuList;
+        this.uniqueId = uniqueId;
     }
 
     public Order() {
@@ -100,5 +104,13 @@ public class Order {
 
     public void setMenuList(List<OrderDetails> menuList) {
         this.menuList = menuList;
+    }
+
+    public String getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
     }
 }
