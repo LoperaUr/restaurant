@@ -40,6 +40,7 @@ public class OrderController {
     }
 
 
+
     @GetMapping("/")
     ResponseEntity<List<OrderResponseDTO>> filterByStateAndRestaurant(
             @RequestParam Character rol,
@@ -63,4 +64,6 @@ public class OrderController {
                     .body(null);
         }
     }
+
+
 }

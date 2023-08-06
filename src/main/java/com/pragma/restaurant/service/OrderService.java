@@ -144,6 +144,10 @@ public class OrderService implements BaseService<OrderDTO, Order> {
             if(data.getOrderState().equals(StateOrder.READY)){
                 order.setOrderState(StateOrder.DELIVERED);
             }
+
+
+
+
             return orderMapper.toDto(orderRepository.save(order));
 
         } catch (Exception e) {
@@ -174,5 +178,22 @@ public class OrderService implements BaseService<OrderDTO, Order> {
 
 
     }
+    @Service
+    public class PedidoService {
 
+
+        public void assignEmployee(Long idOrder, Long idEmployee)throws Exception {
+            Optional<Order> optionalOrden = orderRepository.findById(idOrder);
+            if (!optionalOrden.isPresent()) {
+        throw new RuntimeException("No existe la orden");
+
+            } else {
+                Order order = optionalOrden.get();
+                order.getEmployeeId().setId(idEmployee);
+                order.setOrderState(StateOrder.IN_PREPARATION);
+                orderRepository.save(order);
+
+            }
+        }
+    }
 }

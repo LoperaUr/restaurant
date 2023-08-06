@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.pragma.restaurant.util.StateOrder;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -37,6 +38,10 @@ public class Order {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
     @JsonManagedReference
     private List<OrderDetails> menuList;
+
+
+    //@OneToMany(mappedBy = "orden", cascade = CascadeType.ALL, orphanRemoval = true)
+    //private List<OrderLog> StatusChangeLog = new ArrayList<>();
 
 
     public Order() {
