@@ -5,6 +5,7 @@ import com.pragma.restaurant.dto.claim.ClaimErrorDTO;
 import com.pragma.restaurant.dto.claim.ClaimResponseDTO;
 import com.pragma.restaurant.entity.Claim;
 import com.pragma.restaurant.service.ClaimService;
+import com.pragma.restaurant.util.StateClaim;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +35,7 @@ public class ClaimController {
                     .body(resError);
         }
     }
+
     @GetMapping("/")
     ResponseEntity<List<ClaimResponseDTO>> searchStatusPending() {
         try {
@@ -47,6 +49,21 @@ public class ClaimController {
         }
     }
 
+    @PutMapping("/{id}")
+    ResponseEntity<ClaimResponseDTO> updateState(
+            @PathVariable Long id,
+            @RequestParam StateClaim state
+    ) {
+        try {
+            return ResponseEntity
+                    .ok()
+                    .body(claimService.updateStateClaim(id, state));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(null);
+        }
+    }
 
 
     @DeleteMapping("/{id}")

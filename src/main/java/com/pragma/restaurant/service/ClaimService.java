@@ -51,6 +51,20 @@ public class ClaimService {
         }
     }
 
+    public ClaimResponseDTO updateStateClaim(Long id, StateClaim state) throws Exception {
+        try {
+            if (!claimRepository.existsById(id)) {
+                throw new Exception("El id del reclamo no existe");
+            }
+            Claim claim = claimRepository.findById(id).get();
+            claim.setClaimState(state);
+            return claimMapper.toDto(claimRepository.save(claim));
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+
     public boolean delete(Long id) throws Exception {
         try {
             claimRepository.deleteById(id);
