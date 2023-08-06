@@ -97,7 +97,7 @@ public class OrderService implements BaseService<OrderDTO, Order> {
                 throw new Exception("No tiene permisos para listar las ordenes");
             }
             Pageable pageable = Pageable.ofSize(size);
-            Page<Order> orders = orderRepository.findOrderByState(state, pageable);
+            Page<Order> orders = orderRepository.findByOrderState(state, pageable);
             return orders.map(orderMapper::toDto);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -196,19 +196,7 @@ public class OrderService implements BaseService<OrderDTO, Order> {
 
 
 
-        public void assignEmployee(Long idOrder, Long idEmployee)throws Exception {
-            Optional<Order> optionalOrden = orderRepository.findById(idOrder);
-            if (!optionalOrden.isPresent()) {
-        throw new RuntimeException("No existe la orden");
 
-            } else {
-                Order order = optionalOrden.get();
-                order.getEmployeeId().setId(idEmployee);
-                order.setOrderState(StateOrder.IN_PREPARATION);
-                orderRepository.save(order);
-
-            }
-        }
 
 }
 

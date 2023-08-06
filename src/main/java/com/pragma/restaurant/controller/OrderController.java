@@ -75,7 +75,7 @@ public class OrderController {
 
     ) {
         try {
-            Page<OrderResponseDTO> pageOrders = orderService.getListOrdersByState(rol, state, size);
+            Page<OrderResponseDTO> pageOrders = orderService.getListOrdersByState(rol,  state, size);
             List<OrderResponseDTO> orders = pageOrders.getContent();
             return ResponseEntity
                     .ok()

@@ -21,11 +21,11 @@ import java.util.List;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
-    private final OrderService orderService;
 
-    public EmployeeController(EmployeeService employeeService, OrderService orderService) {
+
+    public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
-        this.orderService = orderService;
+
     }
 
     @PostMapping("/")
