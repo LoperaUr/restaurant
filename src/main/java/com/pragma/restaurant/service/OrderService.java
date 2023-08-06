@@ -124,6 +124,7 @@ public class OrderService implements BaseService<OrderDTO, Order> {
                     throw new Exception("No se puede modificar el estado a pendiente o en preparacion");
                 }
                 order.setOrderState(StateOrder.READY);
+                data.setUniqueId(order.getUniqueId());
             }
             return orderMapper.toDto(orderRepository.save(order));
         } catch (Exception e) {
