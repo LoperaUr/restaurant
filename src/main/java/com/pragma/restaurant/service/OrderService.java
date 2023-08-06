@@ -91,11 +91,9 @@ public class OrderService implements BaseService<OrderDTO, Order> {
         }
     }
 
-    public Page<OrderResponseDTO> getListOrdersByState(Character rol, StateOrder state, int size) throws Exception {
+    public Page<OrderResponseDTO> getListOrdersByState( StateOrder state, int size) throws Exception {
         try {
-            if (rol != ('A')) {
-                throw new Exception("No tiene permisos para listar las ordenes");
-            }
+
             Pageable pageable = Pageable.ofSize(size);
             Page<Order> orders = orderRepository.findByOrderState(state, pageable);
             return orders.map(orderMapper::toDto);

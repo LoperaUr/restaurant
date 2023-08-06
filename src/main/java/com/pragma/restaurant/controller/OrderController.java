@@ -65,17 +65,16 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/")
+    @GetMapping("/orderState/{OrderState}")
     ResponseEntity<List<OrderResponseDTO>> filterByState(
-            @RequestParam Character rol,
-            @RequestParam String restaurant,
+
             @RequestParam StateOrder state,
-            @RequestParam int size,
-            @RequestParam Employee EmployeeId
+            @RequestParam int size
+
 
     ) {
         try {
-            Page<OrderResponseDTO> pageOrders = orderService.getListOrdersByState(rol,  state, size);
+            Page<OrderResponseDTO> pageOrders = orderService.getListOrdersByState( state, size);
             List<OrderResponseDTO> orders = pageOrders.getContent();
             return ResponseEntity
                     .ok()
