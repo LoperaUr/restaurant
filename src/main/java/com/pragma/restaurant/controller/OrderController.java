@@ -3,6 +3,7 @@ package com.pragma.restaurant.controller;
 import com.pragma.restaurant.dto.order.OrderDTO;
 import com.pragma.restaurant.dto.order.OrderErrorDTO;
 import com.pragma.restaurant.dto.order.OrderResponseDTO;
+import com.pragma.restaurant.entity.Employee;
 import com.pragma.restaurant.entity.Order;
 import com.pragma.restaurant.service.OrderService;
 import com.pragma.restaurant.util.StateOrder;
@@ -44,7 +45,9 @@ public class OrderController {
             @RequestParam Character rol,
             @RequestParam String restaurant,
             @RequestParam StateOrder state,
-            @RequestParam int size
+            @RequestParam int size,
+            @RequestParam Employee EmployeeId
+
     ) {
         try {
             Page<OrderResponseDTO> pageOrders = orderService.getListOrdersByStateAndRestaurant(rol, restaurant,  state, size);
