@@ -2,6 +2,7 @@ package com.pragma.restaurant.dto.order;
 
 import com.pragma.restaurant.dto.orderDetail.OrderDetailDTO;
 import com.pragma.restaurant.entity.Employee;
+import com.pragma.restaurant.util.SmSAlert;
 import com.pragma.restaurant.util.StateOrder;
 
 import java.util.List;
@@ -10,14 +11,21 @@ public class OrderResponseDTO extends OrderDTO{
     private Long id;
     private String restaurant;
     private StateOrder orderState;
+
+    private SmSAlert smsAlert ;
     private List<OrderDetailDTO> detailDTOS;
 
     private Employee employee;
 
 
+    public SmSAlert getSmsAlert() {
+        return smsAlert;
+    }
 
+    public void setSmsAlert(SmSAlert smsAlert) {
+        this.smsAlert = smsAlert;
+    }
 
-    
     public Long getId() {
         return id;
     }
