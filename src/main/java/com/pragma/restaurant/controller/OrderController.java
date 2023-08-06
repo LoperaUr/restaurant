@@ -46,8 +46,9 @@ public class OrderController {
             @RequestParam Character rol,
             @RequestParam String restaurant,
             @RequestParam StateOrder state,
-            @RequestParam int size,
-            @RequestParam Employee EmployeeId
+            @RequestParam int size
+
+
 
     ) {
         try {
@@ -65,7 +66,7 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/orderState/{OrderState}")
+    @GetMapping("/byState")
     ResponseEntity<List<OrderResponseDTO>> filterByState(
 
             @RequestParam StateOrder state,

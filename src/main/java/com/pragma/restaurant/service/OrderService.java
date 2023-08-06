@@ -10,11 +10,14 @@ import com.pragma.restaurant.repository.ClientRepository;
 import com.pragma.restaurant.repository.MenuRepository;
 import com.pragma.restaurant.repository.OrderDetailRespository;
 import com.pragma.restaurant.repository.OrderRepository;
+import com.pragma.restaurant.util.SmSAlert;
 import com.pragma.restaurant.util.StateOrder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.Optional;
 
 import static com.pragma.restaurant.validation.OrderValidation.validateRestaurantAndDetails;
@@ -22,6 +25,9 @@ import static com.pragma.restaurant.validation.OrderValidation.validateRestauran
 
 @Service
 public class OrderService implements BaseService<OrderDTO, Order> {
+
+
+    private static final String SMS_PATH = "/src/main/resources/Alerts/sms.txt";
     private final OrderRepository orderRepository;
 
     private final ClientRepository clientRepository;
@@ -192,10 +198,82 @@ public class OrderService implements BaseService<OrderDTO, Order> {
 
     }
 
+    public OrderResponseDTO toSendSmsAlerts(Long id,Order orderRegistry)throws Exception{
+        try {
+
+
+            Optional<Order> orderOptional = orderRepository.findById(id);
+
+            if(orderOptional.get().getOrderState()==StateOrder.PENDING) {
+                Order order = orderOptional.get();
+                order.setSmsAlert(SmSAlert.PENDING);
+                return orderMapper.toDto(orderRepository.save(order));
+                String registry= "Tu pedido está en lista de pendientes";
+                FileWriter fileWriter = new FileWriter(SMS_PATH ,true);
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+                bufferedWriter.write(registry);
+                bufferedWriter.close();
 
 
 
+            }
+            if(orderOptional.get().getOrderState()==StateOrder.READY) {
+                Order order = orderOptional.get();
+                order.setSmsAlert(SmSAlert.READY);
+                return orderMapper.toDto(orderRepository.save(order));
+                String registry= "tu pedido está listo, preparate para recibirlo.";
+                FileWriter fileWriter = new FileWriter(SMS_PATH ,true);
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
+                bufferedWriter.write(registry);
+                bufferedWriter.close();
+
+
+
+            }
+
+            if(orderOptional.get().getOrderState()==StateOrder.IN_PREPARATION) {
+                Order order = orderOptional.get();
+                order.setSmsAlert(SmSAlert.IN_PREPARATION);
+                return orderMapper.toDto(orderRepository.save(order));
+                String registry= "tu pedido está siendo preparado.";
+                FileWriter fileWriter = new FileWriter(SMS_PATH ,true);
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+                bufferedWriter.write(registry);
+                bufferedWriter.close();
+
+
+
+            }
+            if(orderOptional.get().getOrderState()==StateOrder.CANCELLED) {
+                Order order = orderOptional.get();
+                order.setSmsAlert(SmSAlert.CANCELLED);
+                return orderMapper.toDto(orderRepository.save(order));
+
+                String registry= " tu pedido ha sido cancelado.";
+                FileWriter fileWriter = new FileWriter(SMS_PATH ,true);
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+                bufferedWriter.write(registry);
+                bufferedWriter.close();
+
+
+
+            }
+            if (orderOptional.isEmpty()) {
+                throw new Exception("No existe la orden");
+            }else {
+                Order order = orderOptional.get();
+                order.setOrderState(StateOrder.CANCELLED);
+                return orderMapper.toDto(orderRepository.save(order));
+
+
+            }} catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+}
 }
 
 

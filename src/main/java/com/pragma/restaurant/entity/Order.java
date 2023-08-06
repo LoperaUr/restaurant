@@ -3,6 +3,7 @@ package com.pragma.restaurant.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.pragma.restaurant.util.SmSAlert;
 import com.pragma.restaurant.util.StateOrder;
 import jakarta.persistence.*;
 
@@ -29,8 +30,8 @@ public class Order {
 
     @ManyToOne
     @JsonBackReference
-    @JoinColumn(name = "employeeId")
-    private Employee employeeId = null;
+    @JoinColumn(name = "employeeId",nullable = false)
+    private Employee employeeId;
 
     @Enumerated(EnumType.STRING)
     private StateOrder orderState = StateOrder.PENDING;
@@ -40,9 +41,21 @@ public class Order {
     private List<OrderDetails> menuList;
 
 
-    //@OneToMany(mappedBy = "orden", cascade = CascadeType.ALL, orphanRemoval = true)
-    //private List<OrderLog> StatusChangeLog = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    private SmSAlert smsAlert = SmSAlert.PENDING;
 
+
+    public Order(SmSAlert smsAlert) {
+        this.smsAlert = smsAlert;
+    }
+
+    public SmSAlert getSmsAlert() {
+        return smsAlert;
+    }
+
+    public void setSmsAlert(SmSAlert smsAlert) {
+        this.smsAlert = smsAlert;
+    }
 
     public Order() {
     }
