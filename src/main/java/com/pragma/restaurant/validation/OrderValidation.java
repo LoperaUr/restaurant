@@ -19,4 +19,9 @@ public abstract class OrderValidation {
 
         return true;
     }
+
+    //metodo que obtiene el tiempo que transcurre entre que un pedido inicia y pasa a estar terminado
+    public static Long getTimeBetweenDates(Long startDate, Long endDate) {
+        return endDate - startDate;
+    }
 }

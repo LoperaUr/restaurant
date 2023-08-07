@@ -12,6 +12,7 @@ import com.pragma.restaurant.repository.OrderDetailRespository;
 import com.pragma.restaurant.repository.OrderRepository;
 import com.pragma.restaurant.util.SmsAlert;
 import com.pragma.restaurant.util.StateOrder;
+import com.pragma.restaurant.validation.OrderValidation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,10 +22,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Optional;
+import java.util.*;
 
-import static com.pragma.restaurant.validation.OrderValidation.validateRestaurantAndDetails;
-import static com.pragma.restaurant.validation.OrderValidation.validateRestaurantIsSame;
+import static com.pragma.restaurant.validation.OrderValidation.*;
 
 @Service
 public class OrderService implements BaseService<OrderDTO, Order> {
@@ -133,6 +133,11 @@ public class OrderService implements BaseService<OrderDTO, Order> {
                 }
                 order.setOrderState(StateOrder.READY);
                 data.setUniqueId(order.getUniqueId());
+                if(data.getEndDate() != null){
+                    Long startDate = order.getStartDate().getTime();
+                    Long endDate = data.getEndDate().getTime();
+                    OrderValidation.getTimeBetweenDates(startDate, endDate);
+                }
             }
             return orderMapper.toDto(orderRepository.save(order));
         } catch (Exception e) {
