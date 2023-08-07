@@ -134,7 +134,32 @@ public class OrderServiceTest {
         // Por ejemplo:
         // assertNotNull(result);
     }
+    @Test
+    public void testToSendSmsAlertsWithPendingState() throws Exception {
+        // Crear un objeto Order con estado "PENDING" para la prueba
+        Order order = new Order();
+        order.setOrderState(StateOrder.PENDING);
 
+        // Configurar el comportamiento simulado para orderRepository.findById
+        when(orderRepositoryMock.findById(anyLong())).thenReturn(Optional.of(order));
+
+        // Configurar el comportamiento simulado para orderMapper.toDto
+        when(orderMapperMock.toDto(any(Order.class))).thenReturn(new OrderResponseDTO());
+
+        // Llamar al método que se está probando con parámetros válidos
+        Long orderId = 1L;
+        OrderResponseDTO result = orderService.toSendSmsAlerts(orderId, order);
+
+        // Verificar el comportamiento esperado
+        verify(orderRepositoryMock, times(1)).findById(eq(orderId));
+        verify(orderRepositoryMock, times(1)).save(any(Order.class));
+        verify(orderMapperMock, times(1)).toDto(any(Order.class));
+        // Verificar que el resultado no sea nulo
+        // Por ejemplo:
+        // assertNotNull(result);
+    }
     // Write similar test methods for other methods in the OrderService class
 }
+
+
 

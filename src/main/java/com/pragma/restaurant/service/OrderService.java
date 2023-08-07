@@ -30,7 +30,7 @@ import static com.pragma.restaurant.validation.OrderValidation.validateRestauran
 public class OrderService implements BaseService<OrderDTO, Order> {
 
 
-    private static final String SMS_PATH = "/src/main/resources/Alerts/sms.txt";
+    private static final String SMS_PATH = "/src/main/resources/sms.txt";
     private final OrderRepository orderRepository;
 
     private final ClientRepository clientRepository;
