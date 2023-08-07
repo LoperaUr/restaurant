@@ -2,6 +2,7 @@ package com.pragma.restaurant.service;
 
 import com.pragma.restaurant.dto.order.OrderDTO;
 import com.pragma.restaurant.dto.order.OrderResponseDTO;
+import com.pragma.restaurant.entity.Client;
 import com.pragma.restaurant.entity.Menu;
 import com.pragma.restaurant.entity.Order;
 import com.pragma.restaurant.entity.OrderDetails;
@@ -110,6 +111,11 @@ public class OrderService implements BaseService<OrderDTO, Order> {
             }
             Order order = orderOptional.get();
             order.setOrderState(StateOrder.IN_PREPARATION);
+
+
+
+
+
             return orderMapper.toDto(orderRepository.save(order));
 
         } catch (Exception e) {
@@ -158,6 +164,7 @@ public class OrderService implements BaseService<OrderDTO, Order> {
             if(data.getOrderState().equals(StateOrder.READY)){
                 order.setOrderState(StateOrder.DELIVERED);
             }
+
             return orderMapper.toDto(orderRepository.save(order));
 
         } catch (Exception e) {
@@ -258,6 +265,15 @@ public class OrderService implements BaseService<OrderDTO, Order> {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath.toString(), true))) {
             writer.write(message);
             writer.newLine();
+        }
+    }
+
+    public List<Order> getOrderTraceForClient(Long clientId) {
+        Client client = clientRepository.findById(clientId).orElse(null);
+        if (client != null) {
+            return orderRepository.findByClient(client);
+        } else {
+            return Collections.emptyList();
         }
     }
 
