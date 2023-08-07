@@ -18,6 +18,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 import static com.pragma.restaurant.validation.OrderValidation.validateRestaurantAndDetails;
@@ -45,6 +48,87 @@ public class OrderService implements BaseService<OrderDTO, Order> {
         this.menuRepository = menuRepository;
         this.orderDetailRespository = orderDetailRespository;
     }
+
+
+
+
+
+    // ...
+
+    public OrderResponseDTO toSendSmsAlerts(Long id, Order orderRegistry) throws Exception {
+        try {
+            Optional<Order> orderOptional = orderRepository.findById(id);
+
+            if (orderOptional.isEmpty()) {
+                throw new Exception("No existe la orden");
+            }
+
+            Order order = orderOptional.get();
+            SmSAlert smsAlert;
+
+            if (order.getOrderState() == StateOrder.PENDING) {
+                smsAlert = SmSAlert.PENDING;
+            } else if (order.getOrderState() == StateOrder.READY) {
+                smsAlert = SmSAlert.READY;
+            } else if (order.getOrderState() == StateOrder.IN_PREPARATION) {
+                smsAlert = SmSAlert.IN_PREPARATION;
+            } else if (order.getOrderState() == StateOrder.CANCELLED) {
+                smsAlert = SmSAlert.CANCELLED;
+            } else {
+                throw new Exception("Estado de orden inválido");
+            }
+
+            order.setSmsAlert(smsAlert);
+            orderRepository.save(order);
+
+            String registry = getRegistryMessage(smsAlert,order);
+            writeSmsToLogFile(registry);
+
+            return orderMapper.toDto(order);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String getRegistryMessage(SmSAlert smsAlert, Order order) {
+
+        String message;
+        switch (smsAlert) {
+            case PENDING:
+                message = "Tu pedido está en lista de pendientes"+order.getRestaurant()+order.getId()+ orderDetailRespository.toString();
+                break;
+            case READY:
+                message = "tu pedido está listo, prepárate para recibirlo."+order.getRestaurant()+order.getId()+ orderDetailRespository.toString();
+                break;
+            case IN_PREPARATION:
+                message = "tu pedido está siendo preparado."+order.getRestaurant()+order.getId()+ orderDetailRespository.toString();
+                break;
+            case CANCELLED:
+                message = "tu pedido ha sido cancelado."+order.getId();
+                break;
+            default:
+                message = "";
+                break;
+        }
+        return message;
+    }
+
+    private void writeSmsToLogFile(String message) throws IOException {
+        Path filePath = Paths.get(System.getProperty("user.dir") + SMS_PATH);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath.toString(), true))) {
+            writer.write(message);
+            writer.newLine();
+        }
+    }
+
+
+
+
+
+
+
+
+
 
     public OrderResponseDTO createOrder(Order order) throws Exception {
         try {
@@ -198,82 +282,8 @@ public class OrderService implements BaseService<OrderDTO, Order> {
 
     }
 
-    public OrderResponseDTO toSendSmsAlerts(Long id,Order orderRegistry)throws Exception{
-        try {
 
 
-            Optional<Order> orderOptional = orderRepository.findById(id);
-
-            if(orderOptional.get().getOrderState()==StateOrder.PENDING) {
-                Order order = orderOptional.get();
-                order.setSmsAlert(SmSAlert.PENDING);
-                return orderMapper.toDto(orderRepository.save(order));
-                String registry= "Tu pedido está en lista de pendientes";
-                FileWriter fileWriter = new FileWriter(SMS_PATH ,true);
-                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-
-                bufferedWriter.write(registry);
-                bufferedWriter.close();
-
-
-
-            }
-            if(orderOptional.get().getOrderState()==StateOrder.READY) {
-                Order order = orderOptional.get();
-                order.setSmsAlert(SmSAlert.READY);
-                return orderMapper.toDto(orderRepository.save(order));
-                String registry= "tu pedido está listo, preparate para recibirlo.";
-                FileWriter fileWriter = new FileWriter(SMS_PATH ,true);
-                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-
-                bufferedWriter.write(registry);
-                bufferedWriter.close();
-
-
-
-            }
-
-            if(orderOptional.get().getOrderState()==StateOrder.IN_PREPARATION) {
-                Order order = orderOptional.get();
-                order.setSmsAlert(SmSAlert.IN_PREPARATION);
-                return orderMapper.toDto(orderRepository.save(order));
-                String registry= "tu pedido está siendo preparado.";
-                FileWriter fileWriter = new FileWriter(SMS_PATH ,true);
-                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-
-                bufferedWriter.write(registry);
-                bufferedWriter.close();
-
-
-
-            }
-            if(orderOptional.get().getOrderState()==StateOrder.CANCELLED) {
-                Order order = orderOptional.get();
-                order.setSmsAlert(SmSAlert.CANCELLED);
-                return orderMapper.toDto(orderRepository.save(order));
-
-                String registry= " tu pedido ha sido cancelado.";
-                FileWriter fileWriter = new FileWriter(SMS_PATH ,true);
-                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-
-                bufferedWriter.write(registry);
-                bufferedWriter.close();
-
-
-
-            }
-            if (orderOptional.isEmpty()) {
-                throw new Exception("No existe la orden");
-            }else {
-                Order order = orderOptional.get();
-                order.setOrderState(StateOrder.CANCELLED);
-                return orderMapper.toDto(orderRepository.save(order));
-
-
-            }} catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-}
 }
 
 
