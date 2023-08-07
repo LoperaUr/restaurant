@@ -151,6 +151,7 @@ public class OrderService implements BaseService<OrderDTO, Order> {
         }
     }
 
+
     public OrderResponseDTO updateOrderStateToDelivered(Long id, Order data) throws Exception {
         try {
             if (data.getRolAp() != ('A')) {
@@ -172,21 +173,21 @@ public class OrderService implements BaseService<OrderDTO, Order> {
         }
     }
 
-    public OrderResponseDTO toCancelOrders(Long id,String reason)throws Exception{
+
+    public OrderResponseDTO updateOrderStateToCancelled(Long id,Order order)throws Exception{
         try {
             Optional<Order> orderOptional = orderRepository.findById(id);
             if(orderOptional.get().getOrderState()!=StateOrder.PENDING) {
                 throw new Exception("Lo sentimos, tu pedido ya está en preparación y no puede cancelarse");
             }
+
             if (orderOptional.isEmpty()) {
                 throw new Exception("No existe la orden");
             }else{
-                Order order = orderOptional.get();
+
                 order.setOrderState(StateOrder.CANCELLED);
+
                 return orderMapper.toDto(orderRepository.save(order));
-
-
-
 
 
             }
