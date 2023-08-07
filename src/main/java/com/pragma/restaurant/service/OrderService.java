@@ -10,11 +10,17 @@ import com.pragma.restaurant.repository.ClientRepository;
 import com.pragma.restaurant.repository.MenuRepository;
 import com.pragma.restaurant.repository.OrderDetailRespository;
 import com.pragma.restaurant.repository.OrderRepository;
+import com.pragma.restaurant.util.SmsAlert;
 import com.pragma.restaurant.util.StateOrder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 import static com.pragma.restaurant.validation.OrderValidation.validateRestaurantAndDetails;
@@ -22,6 +28,8 @@ import static com.pragma.restaurant.validation.OrderValidation.validateRestauran
 
 @Service
 public class OrderService implements BaseService<OrderDTO, Order> {
+
+    private static final String SMS_PATH = "/src/main/resources/sms.txt";
     private final OrderRepository orderRepository;
 
     private final ClientRepository clientRepository;
@@ -177,5 +185,76 @@ public class OrderService implements BaseService<OrderDTO, Order> {
 
 
     }
+
+    public OrderResponseDTO toSendSmsAlerts(Long id, Order orderRegistry) throws Exception {
+        try {
+            Optional<Order> orderOptional = orderRepository.findById(id);
+
+            if (orderOptional.isEmpty()) {
+                throw new Exception("No existe la orden");
+            }
+
+            Order order = orderOptional.get();
+            SmsAlert smsAlert;
+
+            if (order.getOrderState() == StateOrder.PENDING) {
+                smsAlert = SmsAlert.PENDING;
+            } else if (order.getOrderState() == StateOrder.READY) {
+                smsAlert = SmsAlert.READY;
+            } else if (order.getOrderState() == StateOrder.IN_PREPARATION) {
+                smsAlert = SmsAlert.IN_PREPARATION;
+            } else if (order.getOrderState() == StateOrder.CANCELLED) {
+                smsAlert = SmsAlert.CANCELLED;
+            } else {
+                throw new Exception("Estado de orden inválido");
+            }
+
+            order.setSmsAlert(smsAlert);
+            orderRepository.save(order);
+
+            String registry = getRegistryMessage(smsAlert,order);
+            writeSmsToLogFile(registry);
+
+            return orderMapper.toDto(order);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String getRegistryMessage(SmsAlert smsAlert, Order order) {
+
+        String message;
+        switch (smsAlert) {
+            case PENDING:
+                message = "Tu pedido: "+order.getId()+"está en lista de pendientes "+order.getRestaurant()+ order.getMenuList();
+                break;
+            case READY:
+                message = "tu pedido: "+order.getId()+"está listo, prepárate para recibirlo. "+order.getRestaurant()+order.getId()+ order.getMenuList();
+                break;
+            case IN_PREPARATION:
+                message = "tu pedido: "+order.getId()+ "está siendo preparado. "+order.getRestaurant()+order.getMenuList();
+                break;
+
+            case DELIVERED:
+                message = "tu pedido: "+order.getId()+"ha sido entregado. "+order.getRestaurant()+order.getId()+ order.getMenuList();
+                break;
+            case CANCELLED:
+                message = "tu pedido "+order.getId()+"ha sido cancelado. por el motivo: ";//+order.getClaim();
+                break;
+            default:
+                message = "";
+                break;
+        }
+        return message;
+    }
+
+    private void writeSmsToLogFile(String message) throws IOException {
+        Path filePath = Paths.get(System.getProperty("user.dir") + SMS_PATH);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath.toString(), true))) {
+            writer.write(message);
+            writer.newLine();
+        }
+    }
+
 
 }

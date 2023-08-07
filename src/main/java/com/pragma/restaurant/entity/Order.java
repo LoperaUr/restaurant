@@ -3,6 +3,7 @@ package com.pragma.restaurant.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.pragma.restaurant.util.SmsAlert;
 import com.pragma.restaurant.util.StateOrder;
 import jakarta.persistence.*;
 
@@ -34,9 +35,12 @@ public class Order {
     @JsonManagedReference
     private List<OrderDetails> menuList;
 
+    @Enumerated(EnumType.STRING)
+    private SmsAlert smsAlert ;
+
     private String uniqueId = null;
 
-    public Order(Long id, Character rolRequest, Character rolAp, String restaurant, Client userOrder, StateOrder orderState, List<OrderDetails> menuList, String uniqueId) {
+    public Order(Long id, Character rolRequest, Character rolAp, String restaurant, Client userOrder, StateOrder orderState, List<OrderDetails> menuList, SmsAlert smsAlert, String uniqueId) {
         this.id = id;
         this.rolRequest = rolRequest;
         this.rolAp = rolAp;
@@ -44,8 +48,11 @@ public class Order {
         this.userOrder = userOrder;
         this.orderState = orderState;
         this.menuList = menuList;
+        this.smsAlert = smsAlert;
         this.uniqueId = uniqueId;
     }
+
+
 
     public Order() {
     }
@@ -112,5 +119,13 @@ public class Order {
 
     public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
+    }
+
+    public SmsAlert getSmsAlert() {
+        return smsAlert;
+    }
+
+    public void setSmsAlert(SmsAlert smsAlert) {
+        this.smsAlert = smsAlert;
     }
 }
