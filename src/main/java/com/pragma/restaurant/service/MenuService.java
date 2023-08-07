@@ -27,7 +27,7 @@ public class MenuService implements BaseService<MenuResponseDTO, Menu> {
         this.menuMapper = menuMapper;
     }
 
-    @Override
+
     public List<MenuResponseDTO> searchAll() throws Exception {
         try {
             return menuMapper.toDtoList(menuRepository.findAll());
@@ -36,16 +36,6 @@ public class MenuService implements BaseService<MenuResponseDTO, Menu> {
         }
     }
 
-    @Override
-    public MenuResponseDTO searchById(Long id) throws Exception {
-        try {
-            return menuMapper.ToDto(menuRepository.findById(id).get());
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
-    }
-
-    @Override
     public MenuResponseDTO create(Menu data) throws Exception {
         try {
             if (!data.getRol().equals('A')) {
@@ -63,7 +53,7 @@ public class MenuService implements BaseService<MenuResponseDTO, Menu> {
         }
     }
 
-    @Override
+
     public MenuResponseDTO update(Long id, Menu data) throws Exception {
         try {
             Optional<Menu> menuOptional = menuRepository.findById(id);
@@ -98,7 +88,7 @@ public class MenuService implements BaseService<MenuResponseDTO, Menu> {
         }
     }
 
-    @Override
+
     public boolean delete(Long id) throws Exception {
         try {
             Optional<Menu> menuOptional = menuRepository.findById(id);

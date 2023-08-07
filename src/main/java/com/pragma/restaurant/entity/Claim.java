@@ -1,13 +1,8 @@
 package com.pragma.restaurant.entity;
 
+import com.pragma.restaurant.util.StateClaim;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
 @Entity
 @Table(name = "claim")
 public class Claim {
@@ -16,23 +11,42 @@ public class Claim {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long id_order;
+    @OneToOne
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    private Order orderId;
 
     private String restaurant;
 
     private String description;
 
-    private String claim_state;
+    @Enumerated(EnumType.STRING)
+    private StateClaim claimState = StateClaim.PENDING;
 
-    private String reason;
-
-
-    public Long getId_order() {
-        return id_order;
+    public Claim() {
     }
 
-    public void setId_order(Long id_order) {
-        this.id_order = id_order;
+    public Claim(Long id, Order orderId, String restaurant, String description, StateClaim claimState) {
+        this.id = id;
+        this.orderId = orderId;
+        this.restaurant = restaurant;
+        this.description = description;
+        this.claimState = claimState;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Order getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Order orderId) {
+        this.orderId = orderId;
     }
 
     public String getRestaurant() {
@@ -51,28 +65,12 @@ public class Claim {
         this.description = description;
     }
 
-    public String getClaim_state() {
-        return claim_state;
+    public StateClaim getClaimState() {
+        return claimState;
     }
 
-    public void setClaim_state(String claim_state) {
-        this.claim_state = claim_state;
-    }
-
-    public String getReason() {
-        return reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
+    public void setClaimState(StateClaim claim_state) {
+        this.claimState = claim_state;
     }
 }
 

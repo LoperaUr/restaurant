@@ -1,9 +1,6 @@
 package com.pragma.restaurant.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.util.List;
 

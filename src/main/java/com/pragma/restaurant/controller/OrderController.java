@@ -28,7 +28,7 @@ public class OrderController {
         try {
             return ResponseEntity
                     .ok()
-                    .body(orderService.create(data));
+                    .body(orderService.createOrder(data));
         } catch (Exception e) {
             OrderErrorDTO resError = new OrderErrorDTO();
             resError.setError(e.getMessage());
@@ -38,33 +38,6 @@ public class OrderController {
         }
     }
 
-    @PutMapping("/{id}")
-    ResponseEntity<OrderDTO> update(@PathVariable Long id, @RequestBody Order data) {
-        try {
-            return ResponseEntity
-                    .ok()
-                    .body(orderService.update(id, data));
-        } catch (Exception e) {
-            OrderErrorDTO resError = new OrderErrorDTO();
-            resError.setError(e.getMessage());
-            return ResponseEntity
-                    .badRequest()
-                    .body(resError);
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    ResponseEntity<Boolean> delete(@PathVariable Long id) {
-        try {
-            return ResponseEntity
-                    .ok()
-                    .body(orderService.delete(id));
-        } catch (Exception e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(false);
-        }
-    }
 
     @GetMapping("/")
     ResponseEntity<List<OrderResponseDTO>> filterByStateAndRestaurant(
@@ -76,7 +49,6 @@ public class OrderController {
         try {
             Page<OrderResponseDTO> pageOrders = orderService.getListOrdersByStateAndRestaurant(rol, restaurant,  state, size);
             List<OrderResponseDTO> orders = pageOrders.getContent();
-
             return ResponseEntity
                     .ok()
                     .body(orders);

@@ -5,11 +5,12 @@ import com.pragma.restaurant.dto.claim.ClaimErrorDTO;
 import com.pragma.restaurant.dto.claim.ClaimResponseDTO;
 import com.pragma.restaurant.entity.Claim;
 import com.pragma.restaurant.service.ClaimService;
-import com.pragma.restaurant.service.ClientService;
+import com.pragma.restaurant.util.StateClaim;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/claim")
 public class ClaimController {
@@ -20,13 +21,27 @@ public class ClaimController {
         this.claimService = claimService;
     }
 
-
-    @GetMapping("/")
-    public  ResponseEntity<List<ClaimResponseDTO>> getAll() {
+    @PostMapping("/")
+    ResponseEntity<ClaimDTO> create(@RequestBody Claim data) {
         try {
             return ResponseEntity
                     .ok()
-                    .body(claimService.searchAll());
+                    .body(claimService.createClaim(data));
+        } catch (Exception e) {
+            ClaimErrorDTO resError = new ClaimErrorDTO();
+            resError.setError(e.getMessage());
+            return ResponseEntity
+                    .badRequest()
+                    .body(resError);
+        }
+    }
+
+    @GetMapping("/")
+    ResponseEntity<List<ClaimResponseDTO>> searchStatusPending() {
+        try {
+            return ResponseEntity
+                    .ok()
+                    .body(claimService.getClaimsPending());
         } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
@@ -34,50 +49,22 @@ public class ClaimController {
         }
     }
 
-    @GetMapping("/{id}")
-    ResponseEntity<ClaimDTO> getById(@PathVariable Long id) {
-        try {
-            return ResponseEntity
-                    .ok()
-                    .body(claimService.searchById(id));
-        } catch (Exception e) {
-            ClaimErrorDTO resError = new ClaimErrorDTO();
-            resError.setError(e.getMessage());
-            return ResponseEntity
-                    .badRequest()
-                    .body(resError);
-        }
-    }
-
-    @PostMapping("/")
-    ResponseEntity<ClaimDTO> create(@RequestBody Claim data) {
-        try {
-            return ResponseEntity
-                    .ok()
-                    .body(claimService.create(data));
-        } catch (Exception e) {
-            ClaimErrorDTO resError = new ClaimErrorDTO();
-            resError.setError(e.getMessage());
-            return ResponseEntity
-                    .badRequest()
-                    .body(resError);
-        }
-    }
-
     @PutMapping("/{id}")
-    ResponseEntity<ClaimDTO> update(@PathVariable Long id, @RequestBody Claim data) {
+    ResponseEntity<ClaimResponseDTO> updateState(
+            @PathVariable Long id,
+            @RequestParam StateClaim state
+    ) {
         try {
             return ResponseEntity
                     .ok()
-                    .body(claimService.update(id, data));
+                    .body(claimService.updateStateClaim(id, state));
         } catch (Exception e) {
-            ClaimErrorDTO resError = new ClaimErrorDTO();
-            resError.setError(e.getMessage());
             return ResponseEntity
                     .badRequest()
-                    .body(resError);
+                    .body(null);
         }
     }
+
 
     @DeleteMapping("/{id}")
     ResponseEntity<Boolean> delete(@PathVariable Long id) {

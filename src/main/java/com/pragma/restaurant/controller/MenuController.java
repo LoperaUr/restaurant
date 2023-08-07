@@ -33,20 +33,7 @@ public class MenuController {
         }
     }
 
-    @GetMapping("/{id}")
-    ResponseEntity<MenuDTO> getById(@PathVariable Long id) {
-        try {
-            return ResponseEntity
-                    .ok()
-                    .body(menuService.searchById(id));
-        } catch (Exception e) {
-            MenuErrorDTO resError = new MenuErrorDTO();
-            resError.setError(e.getMessage());
-            return ResponseEntity
-                    .badRequest()
-                    .body(resError);
-        }
-    }
+
 
     @PostMapping("/")
     ResponseEntity<MenuDTO> create(@RequestBody Menu data) {

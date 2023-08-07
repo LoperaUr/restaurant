@@ -9,8 +9,9 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 
 public interface ClaimMapper {
-    ClaimResponseDTO ToDto(Claim claim);
+    ClaimResponseDTO toDto(Claim claim);
 
     List<ClaimResponseDTO> toDtoList(List<Claim> claim);
 
 }
+

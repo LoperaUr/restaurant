@@ -35,20 +35,7 @@ public class ClientController {
         }
     }
 
-    @GetMapping("/{id}")
-    ResponseEntity<ClientDTO> getById(@PathVariable Long id) {
-        try {
-            return ResponseEntity
-                    .ok()
-                    .body(clientService.searchById(id));
-        } catch (Exception e) {
-            ClientErrorDTO resError = new ClientErrorDTO();
-            resError.setError(e.getMessage());
-            return ResponseEntity
-                    .badRequest()
-                    .body(resError);
-        }
-    }
+
 
     @PostMapping("/")
     ResponseEntity<ClientDTO> create(@RequestBody Client data) {

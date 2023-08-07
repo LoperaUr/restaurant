@@ -1,25 +1,27 @@
 package com.pragma.restaurant.validation;
 
-import com.pragma.restaurant.entity.Order;
 import com.pragma.restaurant.entity.OrderDetails;
+import com.pragma.restaurant.util.StateOrder;
 
 import java.util.List;
 
 public abstract class OrderValidation {
-    public static Boolean validateRestaurantAndDetails(Order order) {
-        return order.getRestaurant() == null || order.getRestaurant().isEmpty() ||
-                order.getOrderState() == null || order.getMenuList().isEmpty();
+    public static Boolean validateRestaurantAndDetails(String restaurant, List<OrderDetails> menuList, StateOrder state) {
+        return restaurant == null || menuList == null || state == null;
     }
 
     // metodo que valida que todos los platos de la orden sean del mismo restaurant
-    public static Boolean validateRestaurantIsSame(Order order) {
-        String restaurantVal = order.getRestaurant();
-        List<OrderDetails> menuList = order.getMenuList();
-        for (OrderDetails detail : menuList) {
-            if (!detail.getMenuId().getRestaurant().equals(restaurantVal)) {
-                return false;
-            }
+    public static Boolean validateRestaurantIsSame(String restaurant, String restaurantMenu) {
+
+        if (!restaurant.equals(restaurantMenu)) {
+            return false;
         }
+
         return true;
+    }
+
+    //metodo que obtiene el tiempo que transcurre entre que un pedido inicia y pasa a estar terminado
+    public static Long getTimeBetweenDates(Long startDate, Long endDate) {
+        return endDate - startDate;
     }
 }

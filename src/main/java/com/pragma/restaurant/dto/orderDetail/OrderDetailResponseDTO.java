@@ -3,7 +3,7 @@ package com.pragma.restaurant.dto.orderDetail;
 import com.pragma.restaurant.entity.Menu;
 import com.pragma.restaurant.entity.Order;
 
-public class OrderDetailDTO {
+public class OrderDetailResponseDTO extends OrderDetailDTO {
     private Menu menuId;
     private Order orderId;
     private Integer quantity;
@@ -31,5 +31,4 @@ public class OrderDetailDTO {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
-
 }
