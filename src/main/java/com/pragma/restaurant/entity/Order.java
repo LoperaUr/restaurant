@@ -7,8 +7,8 @@ import com.pragma.restaurant.util.SmsAlert;
 import com.pragma.restaurant.util.StateOrder;
 import jakarta.persistence.*;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
@@ -35,12 +35,15 @@ public class Order {
     @JsonManagedReference
     private List<OrderDetails> menuList;
 
-    @Enumerated(EnumType.STRING)
-    private SmsAlert smsAlert ;
-
     private String uniqueId = null;
 
-    public Order(Long id, Character rolRequest, Character rolAp, String restaurant, Client userOrder, StateOrder orderState, List<OrderDetails> menuList, SmsAlert smsAlert, String uniqueId) {
+    private Date startDate;
+    private Date endDate;
+
+    private SmsAlert smsAlert;
+
+
+    public Order(Long id, Character rolRequest, Character rolAp, String restaurant, Client userOrder, StateOrder orderState, List<OrderDetails> menuList, String uniqueId, Date startDate, Date endDate, SmsAlert smsAlert) {
         this.id = id;
         this.rolRequest = rolRequest;
         this.rolAp = rolAp;
@@ -48,11 +51,11 @@ public class Order {
         this.userOrder = userOrder;
         this.orderState = orderState;
         this.menuList = menuList;
-        this.smsAlert = smsAlert;
         this.uniqueId = uniqueId;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.smsAlert = smsAlert;
     }
-
-
 
     public Order() {
     }
@@ -121,11 +124,27 @@ public class Order {
         this.uniqueId = uniqueId;
     }
 
-    public SmsAlert getSmsAlert() {
-        return smsAlert;
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public void setSmsAlert(SmsAlert smsAlert) {
         this.smsAlert = smsAlert;
+    }
+
+    public SmsAlert getSmsAlert() {
+        return smsAlert;
     }
 }
