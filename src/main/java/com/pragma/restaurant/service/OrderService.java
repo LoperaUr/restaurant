@@ -2,18 +2,13 @@ package com.pragma.restaurant.service;
 
 import com.pragma.restaurant.dto.order.OrderDTO;
 import com.pragma.restaurant.dto.order.OrderResponseDTO;
-import com.pragma.restaurant.entity.Client;
-import com.pragma.restaurant.entity.Menu;
-import com.pragma.restaurant.entity.Order;
-import com.pragma.restaurant.entity.OrderDetails;
+import com.pragma.restaurant.entity.*;
 import com.pragma.restaurant.mapper.OrderMapper;
-import com.pragma.restaurant.repository.ClientRepository;
-import com.pragma.restaurant.repository.MenuRepository;
-import com.pragma.restaurant.repository.OrderDetailRespository;
-import com.pragma.restaurant.repository.OrderRepository;
+import com.pragma.restaurant.repository.*;
 import com.pragma.restaurant.util.SmsAlert;
 import com.pragma.restaurant.util.StateOrder;
 import com.pragma.restaurant.validation.OrderValidation;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -41,12 +36,15 @@ public class OrderService implements BaseService<OrderDTO, Order> {
 
     private final OrderDetailRespository orderDetailRespository;
 
-    public OrderService(OrderRepository orderRepository, ClientRepository clientRepository, OrderMapper orderMapper, MenuRepository menuRepository, OrderDetailRespository orderDetailRespository) {
+    private final EmployeeRepository employeeRepository;
+
+    public OrderService(OrderRepository orderRepository, ClientRepository clientRepository, OrderMapper orderMapper, MenuRepository menuRepository, OrderDetailRespository orderDetailRespository, EmployeeRepository employeeRepository) {
         this.orderRepository = orderRepository;
         this.clientRepository = clientRepository;
         this.orderMapper = orderMapper;
         this.menuRepository = menuRepository;
         this.orderDetailRespository = orderDetailRespository;
+        this.employeeRepository = employeeRepository;
     }
 
     public OrderResponseDTO createOrder(Order order) throws Exception {
@@ -278,5 +276,27 @@ public class OrderService implements BaseService<OrderDTO, Order> {
         }
     }
 
+    public void assignOrderToEmployee(Long id, Long idEmployee) throws Exception {
+        try {
+            Optional<Order> orderOptional = orderRepository.findById(id);
+            if (orderOptional.isEmpty()) {
+                throw new EntityNotFoundException("Order not found with ID: " + id);
+            }
+            Optional<Employee> optionalEmployee = employeeRepository.findById(idEmployee);
+            if (optionalEmployee.isEmpty()) {
+                throw new EntityNotFoundException("Employee not found with ID: " + idEmployee);
+            }
+            Order order = new Order();
+            Employee employee = new Employee();
+            //order.setEmployee(employee);: Esta línea asigna un objeto Employee a la propiedad employee
+            // de la instancia de la entidad Order. Estás estableciendo la relación entre la orden y el
+            // empleado asignando el empleado correspondiente a la orden.
+            // Esto es importante para establecer la relación en la base de datos.
+            order.setEmployeeId(employee);
+            orderRepository.save(order);
 
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

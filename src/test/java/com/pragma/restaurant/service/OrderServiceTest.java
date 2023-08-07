@@ -4,15 +4,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.pragma.restaurant.dto.order.OrderResponseDTO;
-import com.pragma.restaurant.entity.Client;
-import com.pragma.restaurant.entity.Menu;
-import com.pragma.restaurant.entity.Order;
-import com.pragma.restaurant.entity.OrderDetails;
+import com.pragma.restaurant.entity.*;
 import com.pragma.restaurant.mapper.OrderMapper;
-import com.pragma.restaurant.repository.ClientRepository;
-import com.pragma.restaurant.repository.MenuRepository;
-import com.pragma.restaurant.repository.OrderDetailRespository;
-import com.pragma.restaurant.repository.OrderRepository;
+import com.pragma.restaurant.repository.*;
 import com.pragma.restaurant.util.StateOrder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,6 +26,7 @@ public class OrderServiceTest {
     private MenuRepository menuRepositoryMock;
     private OrderDetailRespository orderDetailRespositoryMock;
     private OrderMapper orderMapperMock;
+    private EmployeeRepository employeeRepositoryMock;
 
     @BeforeEach
     public void setUp() {
@@ -40,13 +35,15 @@ public class OrderServiceTest {
         menuRepositoryMock = mock(MenuRepository.class);
         orderDetailRespositoryMock = mock(OrderDetailRespository.class);
         orderMapperMock = mock(OrderMapper.class);
+        employeeRepositoryMock = mock(EmployeeRepository.class);
 
         orderService = new OrderService(
                 orderRepositoryMock,
                 clientRepositoryMock,
                 orderMapperMock,
                 menuRepositoryMock,
-                orderDetailRespositoryMock
+                orderDetailRespositoryMock,
+                employeeRepositoryMock
         );
     }
 
@@ -272,4 +269,23 @@ public class OrderServiceTest {
     }
 
     // Write similar test methods for other methods in the OrderService class
+
+ /*   @Test
+    public void testAssignOrderToEmployee() throws Exception {
+        Long orderId = 1L;
+        Long employeeId = 2L;
+
+        Order order = new Order();
+        Employee employee = new Employee();
+
+        when(orderRepositoryMock.findById(orderId)).thenReturn(Optional.of(order));
+        when(employeeRepositoryMock.findById(employeeId)).thenReturn(Optional.of(employee));
+
+        orderService.(orderId, employeeId);
+
+        verify(orderRepositoryMock, times(1)).findById(orderId);
+        verify(employeeRepositoryMock, times(1)).findById(employeeId);
+        verify(orderRepositoryMock, times(1)).save(order);
+    }*/
+
 }

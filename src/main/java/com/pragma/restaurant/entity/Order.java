@@ -37,13 +37,18 @@ public class Order {
 
     private String uniqueId = null;
 
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "employeeId",nullable = false)
+    private Employee employeeId;
+
     private Date startDate;
     private Date endDate;
 
     private SmsAlert smsAlert;
 
 
-    public Order(Long id, Character rolRequest, Character rolAp, String restaurant, Client userOrder, StateOrder orderState, List<OrderDetails> menuList, String uniqueId, Date startDate, Date endDate, SmsAlert smsAlert) {
+    public Order(Long id, Character rolRequest, Character rolAp, String restaurant, Client userOrder, StateOrder orderState, List<OrderDetails> menuList, String uniqueId, Employee employeeId, Date startDate, Date endDate, SmsAlert smsAlert) {
         this.id = id;
         this.rolRequest = rolRequest;
         this.rolAp = rolAp;
@@ -52,6 +57,7 @@ public class Order {
         this.orderState = orderState;
         this.menuList = menuList;
         this.uniqueId = uniqueId;
+        this.employeeId = employeeId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.smsAlert = smsAlert;
@@ -146,5 +152,13 @@ public class Order {
 
     public SmsAlert getSmsAlert() {
         return smsAlert;
+    }
+
+    public Employee getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Employee employeeId) {
+        this.employeeId = employeeId;
     }
 }

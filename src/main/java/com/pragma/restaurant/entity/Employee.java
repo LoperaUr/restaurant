@@ -8,7 +8,6 @@ import java.util.List;
 
 @Entity
 @Table(name= "employee")
-
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,17 +17,18 @@ public class Employee {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "")
+    @OneToMany(mappedBy = "employeeId")
     @JsonManagedReference
     @JsonIgnore
-    private List<Order> assignedEmployee;
+    private List<Order> orders;
 
     public Employee() {
     }
 
-    public Employee(Long id, String name, List<Order> assignedEmployee) {
+    public Employee(Long id, String name, List<Order> orders) {
         this.id = id;
         this.name = name;
+        this.orders = orders;
     }
 
     public Long getId() {
@@ -47,11 +47,11 @@ public class Employee {
         this.name = name;
     }
 
-    public List<Order> getAssignedEmployee() {
-        return assignedEmployee;
+    public List<Order> getOrders() {
+        return orders;
     }
 
-    public void setAssignedEmployee(List<Order> assignedEmployee) {
-        this.assignedEmployee = assignedEmployee;
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 }
