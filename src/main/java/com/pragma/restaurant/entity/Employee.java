@@ -1,5 +1,6 @@
 package com.pragma.restaurant.entity;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -7,14 +8,16 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name= "employee")
+@Table(name="employee")
 public class Employee {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "Id")
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
 
     @OneToMany(mappedBy = "employeeId")
@@ -24,6 +27,7 @@ public class Employee {
 
     public Employee() {
     }
+
 
     public Employee(Long id, String name, List<Order> orders) {
         this.id = id;

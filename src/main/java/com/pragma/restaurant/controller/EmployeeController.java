@@ -1,7 +1,7 @@
 package com.pragma.restaurant.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+
 import com.pragma.restaurant.dto.employee.EmployeeDTO;
 import com.pragma.restaurant.dto.employee.EmployeeErrorDTO;
 import com.pragma.restaurant.dto.employee.EmployeeResponseDTO;
@@ -16,11 +16,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @RestController
 @RequestMapping("api/v1/employee")
-
 public class EmployeeController {
+
     private final EmployeeService employeeService;
 
 
@@ -56,6 +55,7 @@ public class EmployeeController {
                     .body(null);
         }
     }
+
 
 
 

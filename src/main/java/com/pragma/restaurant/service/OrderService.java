@@ -79,6 +79,7 @@ public class OrderService implements BaseService<OrderDTO, Order> {
             ) {
                 orderDetailRespository.save(detail);
             }
+
             return orderResponseDTO;
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -92,6 +93,19 @@ public class OrderService implements BaseService<OrderDTO, Order> {
             }
             Pageable pageable = Pageable.ofSize(size);
             Page<Order> orders = orderRepository.findByRestaurantAndOrderState(restaurant, state, pageable);
+            return orders.map(orderMapper::toDto);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public Page<OrderResponseDTO> getListOrdersByState(Character rol, StateOrder state, int size) throws Exception {
+        try {
+            if (rol != ('A')) {
+                throw new Exception("No tiene permisos para listar las ordenes");
+            }
+            Pageable pageable = Pageable.ofSize(size);
+            Page<Order> orders = orderRepository.findByState(state, pageable);
             return orders.map(orderMapper::toDto);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -270,33 +284,29 @@ public class OrderService implements BaseService<OrderDTO, Order> {
     public List<Order> getOrderTraceForClient(Long clientId) {
         Client client = clientRepository.findById(clientId).orElse(null);
         if (client != null) {
-            return orderRepository.findByClient(client);
+                return (List<Order>) orderMapper.toDto(orderRepository.findByUserOrder(client));
         } else {
             return Collections.emptyList();
         }
     }
 
     public void assignOrderToEmployee(Long id, Long idEmployee) throws Exception {
-        try {
-            Optional<Order> orderOptional = orderRepository.findById(id);
-            if (orderOptional.isEmpty()) {
-                throw new EntityNotFoundException("Order not found with ID: " + id);
-            }
-            Optional<Employee> optionalEmployee = employeeRepository.findById(idEmployee);
-            if (optionalEmployee.isEmpty()) {
-                throw new EntityNotFoundException("Employee not found with ID: " + idEmployee);
-            }
-            Order order = new Order();
-            Employee employee = new Employee();
-            //order.setEmployee(employee);: Esta línea asigna un objeto Employee a la propiedad employee
-            // de la instancia de la entidad Order. Estás estableciendo la relación entre la orden y el
-            // empleado asignando el empleado correspondiente a la orden.
-            // Esto es importante para establecer la relación en la base de datos.
-            order.setEmployeeId(employee);
-            orderRepository.save(order);
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        Optional<Order> orderOptional = orderRepository.findById(id);
+        if (orderOptional.isEmpty()) {
+            throw new EntityNotFoundException("Order not found with ID: " + id);
         }
+
+        Optional<Employee> optionalEmployee = employeeRepository.findById(id);
+        if (optionalEmployee.isEmpty()) {
+            throw new EntityNotFoundException("Employee not found with ID: " + idEmployee);
+        }
+
+        Order order = orderOptional.get(); // Obtén la orden existente
+        Employee employee = optionalEmployee.get(); // Obtén el empleado existente
+
+        order.setEmployeeId(employee); // Establece la relación entre la orden y el empleado
+        orderRepository.save(order);
     }
+
+
 }

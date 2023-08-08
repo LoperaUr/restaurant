@@ -1,12 +1,13 @@
 package com.pragma.restaurant.dto.employee;
 
 import com.pragma.restaurant.entity.Order;
+
 import java.util.List;
 
 public class EmployeeResponseDTO extends EmployeeDTO {
-    private long id;
-    private String name;
-    private List<Order> orders;
+     private long id;
+        private String name;
+        private List<Order> orders;
 
 
     public long getId() {

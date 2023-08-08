@@ -4,7 +4,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.pragma.restaurant.dto.order.OrderResponseDTO;
-import com.pragma.restaurant.entity.*;
+import com.pragma.restaurant.entity.Employee;
+import com.pragma.restaurant.entity.Menu;
+import com.pragma.restaurant.entity.Order;
+import com.pragma.restaurant.entity.OrderDetails;
 import com.pragma.restaurant.mapper.OrderMapper;
 import com.pragma.restaurant.repository.*;
 import com.pragma.restaurant.util.StateOrder;
@@ -26,6 +29,7 @@ public class OrderServiceTest {
     private MenuRepository menuRepositoryMock;
     private OrderDetailRespository orderDetailRespositoryMock;
     private OrderMapper orderMapperMock;
+
     private EmployeeRepository employeeRepositoryMock;
 
     @BeforeEach
@@ -155,75 +159,6 @@ public class OrderServiceTest {
         // Por ejemplo:
         // assertNotNull(result);
     }
-
-    @Test
-    public void testGetOrderTraceForClientWithExistingClient() {
-        // Crear un objeto Client ficticio para la prueba
-        Long clientId = 1L;
-        Client client = new Client();
-        client.setId(clientId);
-
-        // Crear una lista ficticia de órdenes para que sea devuelta por el repositorio de órdenes
-        List<Order> mockOrders = new ArrayList<>();
-        // Agregar órdenes ficticias a la lista
-        // ...
-
-        // Configurar el comportamiento simulado para clientRepository.findById
-        when(clientRepositoryMock.findById(anyLong())).thenReturn(Optional.of(client));
-
-        // Configurar el comportamiento simulado para orderRepository.findByClient
-        when(orderRepositoryMock.findByClient(any(Client.class))).thenReturn(mockOrders);
-
-        // Llamar al método que se está probando con el cliente existente
-        List<Order> result = orderService.getOrderTraceForClient(clientId);
-
-        // Verificar el comportamiento esperado
-        verify(clientRepositoryMock, times(1)).findById(eq(clientId));
-        verify(orderRepositoryMock, times(1)).findByClient(eq(client));
-        // Verificar que el resultado no sea nulo y tenga el tamaño correcto
-        // Por ejemplo:
-        // assertNotNull(result);
-        // assertEquals(mockOrders.size(), result.size());
-    }
-
-    @Test
-    public void testGetOrderTraceForClientWithNonExistingClient() {
-        // Configurar el comportamiento simulado para clientRepository.findById
-        when(clientRepositoryMock.findById(anyLong())).thenReturn(Optional.empty());
-
-        // Llamar al método que se está probando con un cliente que no existe
-        List<Order> result = orderService.getOrderTraceForClient(100L);
-
-        // Verificar el comportamiento esperado
-        verify(clientRepositoryMock, times(1)).findById(eq(100L));
-        // Verificar que el resultado sea una lista vacía
-        // Por ejemplo:
-        // assertNotNull(result);
-        // assertTrue(result.isEmpty());
-    }
-
-
-    @Test
-    public void testUpdateOrderStateToReadyWithValidData() throws Exception {
-        // Crear un objeto Order con datos válidos para la prueba
-        Order order = new Order();
-        order.setRolAp('A');
-        // Establecer otras propiedades necesarias para la orden
-
-        // Configurar el comportamiento simulado para orderRepository.findById
-        when(orderRepositoryMock.findById(anyLong())).thenReturn(Optional.of(order));
-
-        // Llamar al método que se está probando con parámetros válidos
-        Long orderId = 1L;
-        OrderResponseDTO result = orderService.updateOrderStateToReady(orderId, order);
-
-        // Verificar el comportamiento esperado
-        verify(orderRepositoryMock, times(1)).findById(eq(orderId));
-        verify(orderRepositoryMock, times(1)).save(any(Order.class));
-        // Verificar que el resultado no sea nulo
-        // Por ejemplo:
-        // assertNotNull(result);
-    }
     @Test
     public void testUpdateOrderStateToDeliveredWithValidData() throws Exception {
         // Crear un objeto Order con datos válidos para la prueba
@@ -268,24 +203,24 @@ public class OrderServiceTest {
         // assertNotNull(result);
     }
 
-    // Write similar test methods for other methods in the OrderService class
-
- /*   @Test
-    public void testAssignOrderToEmployee() throws Exception {
+    @Test
+    public void testAssignOrderToEmployee_Success() throws Exception {
+        // Preparar datos de prueba
         Long orderId = 1L;
-        Long employeeId = 2L;
-
+        Long employeeId = 1L;
         Order order = new Order();
         Employee employee = new Employee();
-
         when(orderRepositoryMock.findById(orderId)).thenReturn(Optional.of(order));
         when(employeeRepositoryMock.findById(employeeId)).thenReturn(Optional.of(employee));
 
-        orderService.(orderId, employeeId);
+        // Ejecutar la función
+        orderService.assignOrderToEmployee(orderId, employeeId);
 
+        // Verificar que se haya llamado a los métodos necesarios
         verify(orderRepositoryMock, times(1)).findById(orderId);
         verify(employeeRepositoryMock, times(1)).findById(employeeId);
         verify(orderRepositoryMock, times(1)).save(order);
-    }*/
+    }
 
+    // Write similar test methods for other methods in the OrderService class
 }

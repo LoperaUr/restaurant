@@ -1,6 +1,6 @@
 package com.pragma.restaurant.dto.employee;
 
-public class EmployeeErrorDTO extends EmployeeDTO {
+public class EmployeeErrorDTO extends EmployeeDTO{
 
     private String error;
 
