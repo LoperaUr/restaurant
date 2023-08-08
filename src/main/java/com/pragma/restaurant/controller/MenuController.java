@@ -5,6 +5,8 @@ import com.pragma.restaurant.dto.menu.MenuErrorDTO;
 import com.pragma.restaurant.dto.menu.MenuResponseDTO;
 import com.pragma.restaurant.entity.Menu;
 import com.pragma.restaurant.service.MenuService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/menu")
+@Api(value = "Menu Management System", description = "Operations related to menus")
+
 public class MenuController {
     private final MenuService menuService;
 
@@ -21,6 +25,7 @@ public class MenuController {
     }
 
     @GetMapping("/")
+    @ApiOperation(value = "Get all menus")
     public ResponseEntity<List<MenuResponseDTO>> getAll() {
         try {
             return ResponseEntity
@@ -36,6 +41,7 @@ public class MenuController {
 
 
     @PostMapping("/")
+    @ApiOperation(value = "Create a menu")
     ResponseEntity<MenuDTO> create(@RequestBody Menu data) {
         try {
             return ResponseEntity
@@ -51,6 +57,7 @@ public class MenuController {
     }
 
     @PutMapping("/{id}")
+    @ApiOperation(value = "Update a menu by ID")
     ResponseEntity<MenuDTO> update(@PathVariable Long id, @RequestBody Menu data) {
         try {
             return ResponseEntity
@@ -66,6 +73,7 @@ public class MenuController {
     }
 
     @DeleteMapping("/{id}")
+    @ApiOperation(value = "Delete a menu by ID")
     ResponseEntity<Boolean> delete(@PathVariable Long id) {
         try {
             return ResponseEntity
