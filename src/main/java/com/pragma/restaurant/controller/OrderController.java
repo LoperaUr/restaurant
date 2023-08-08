@@ -43,7 +43,7 @@ public class OrderController {
     }
 
 
-    @GetMapping("/")
+    @GetMapping("/byState")
     @ApiOperation(value = "Filter orders by state and restaurant")
     ResponseEntity<List<OrderResponseDTO>> filterByStateAndRestaurant(
             @RequestParam Character rol,

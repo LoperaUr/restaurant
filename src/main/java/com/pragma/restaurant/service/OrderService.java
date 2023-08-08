@@ -2,18 +2,13 @@ package com.pragma.restaurant.service;
 
 import com.pragma.restaurant.dto.order.OrderDTO;
 import com.pragma.restaurant.dto.order.OrderResponseDTO;
-import com.pragma.restaurant.entity.Client;
-import com.pragma.restaurant.entity.Menu;
-import com.pragma.restaurant.entity.Order;
-import com.pragma.restaurant.entity.OrderDetails;
+import com.pragma.restaurant.entity.*;
 import com.pragma.restaurant.mapper.OrderMapper;
-import com.pragma.restaurant.repository.ClientRepository;
-import com.pragma.restaurant.repository.MenuRepository;
-import com.pragma.restaurant.repository.OrderDetailRespository;
-import com.pragma.restaurant.repository.OrderRepository;
+import com.pragma.restaurant.repository.*;
 import com.pragma.restaurant.util.SmsAlert;
 import com.pragma.restaurant.util.StateOrder;
 import com.pragma.restaurant.validation.OrderValidation;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -41,12 +36,15 @@ public class OrderService implements BaseService<OrderDTO, Order> {
 
     private final OrderDetailRespository orderDetailRespository;
 
+
+
     public OrderService(OrderRepository orderRepository, ClientRepository clientRepository, OrderMapper orderMapper, MenuRepository menuRepository, OrderDetailRespository orderDetailRespository) {
         this.orderRepository = orderRepository;
         this.clientRepository = clientRepository;
         this.orderMapper = orderMapper;
         this.menuRepository = menuRepository;
         this.orderDetailRespository = orderDetailRespository;
+
     }
 
     public OrderResponseDTO createOrder(Order order) throws Exception {
@@ -81,6 +79,7 @@ public class OrderService implements BaseService<OrderDTO, Order> {
             ) {
                 orderDetailRespository.save(detail);
             }
+
             return orderResponseDTO;
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -94,6 +93,19 @@ public class OrderService implements BaseService<OrderDTO, Order> {
             }
             Pageable pageable = Pageable.ofSize(size);
             Page<Order> orders = orderRepository.findByRestaurantAndOrderState(restaurant, state, pageable);
+            return orders.map(orderMapper::toDto);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public Page<OrderResponseDTO> getListOrdersByState(Character rol, StateOrder state, int size) throws Exception {
+        try {
+            if (rol != ('A')) {
+                throw new Exception("No tiene permisos para listar las ordenes");
+            }
+            Pageable pageable = Pageable.ofSize(size);
+            Page<Order> orders = orderRepository.findByOrderState(state, pageable);
             return orders.map(orderMapper::toDto);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -277,6 +289,7 @@ public class OrderService implements BaseService<OrderDTO, Order> {
             return Collections.emptyList();
         }
     }
+
 
 
 }
