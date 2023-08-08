@@ -269,7 +269,7 @@ public class OrderService implements BaseService<OrderDTO, Order> {
         }
     }
 
-    public List<Order> getOrderTraceForClient(Long clientId) {
+    /*public List<Order> getOrderTraceForClient(Long clientId) {
         Client client = clientRepository.findById(clientId).orElse(null);
         if (client != null) {
             return orderRepository.findByClient(client);
@@ -277,6 +277,6 @@ public class OrderService implements BaseService<OrderDTO, Order> {
             return Collections.emptyList();
         }
     }
-
+*/
 
 }

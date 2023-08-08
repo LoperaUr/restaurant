@@ -19,5 +19,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Order findByUserOrder(Client id);
 
-    List<Order> findByClient(Client client);
+
 }
