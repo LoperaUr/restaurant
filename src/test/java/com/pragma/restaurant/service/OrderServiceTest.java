@@ -1,10 +1,10 @@
 package com.pragma.restaurant.service;
 
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.pragma.restaurant.dto.order.OrderResponseDTO;
+import com.pragma.restaurant.entity.Client;
 import com.pragma.restaurant.entity.Menu;
 import com.pragma.restaurant.entity.Order;
 import com.pragma.restaurant.entity.OrderDetails;
@@ -114,7 +114,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void testUpdateOrderStateToInPreparation() throws Exception {
+    public void testUpdateOrderStateToInPreparationWithValidData() throws Exception {
         // Crear un objeto Order con datos válidos para la prueba
         Order order = new Order();
         order.setRolAp('A');
@@ -158,8 +158,49 @@ public class OrderServiceTest {
         // Por ejemplo:
         // assertNotNull(result);
     }
+    @Test
+    public void testUpdateOrderStateToDeliveredWithValidData() throws Exception {
+        // Crear un objeto Order con datos válidos para la prueba
+        Order order = new Order();
+        order.setRolAp('A');
+        // Establecer otras propiedades necesarias para la orden
+
+        // Configurar el comportamiento simulado para orderRepository.findById
+        when(orderRepositoryMock.findById(anyLong())).thenReturn(Optional.of(order));
+
+        // Llamar al método que se está probando con parámetros válidos
+        Long orderId = 1L;
+        OrderResponseDTO result = orderService.updateOrderStateToDelivered(orderId, order);
+
+        // Verificar el comportamiento esperado
+        verify(orderRepositoryMock, times(1)).findById(eq(orderId));
+        verify(orderRepositoryMock, times(1)).save(any(Order.class));
+        // Verificar que el resultado no sea nulo
+        // Por ejemplo:
+        // assertNotNull(result);
+    }
+
+    @Test
+    public void testUpdateOrderStateToCancelWithValidData() throws Exception {
+        // Crear un objeto Order con datos válidos para la prueba
+        Order order = new Order();
+        order.setRolAp('A');
+        // Establecer otras propiedades necesarias para la orden
+
+        // Configurar el comportamiento simulado para orderRepository.findById
+        when(orderRepositoryMock.findById(anyLong())).thenReturn(Optional.of(order));
+
+        // Llamar al método que se está probando con parámetros válidos
+        Long orderId = 1L;
+        OrderResponseDTO result = orderService.updateOrderStateToCancelled(orderId, order);
+
+        // Verificar el comportamiento esperado
+        verify(orderRepositoryMock, times(1)).findById(eq(orderId));
+        verify(orderRepositoryMock, times(1)).save(any(Order.class));
+        // Verificar que el resultado no sea nulo
+        // Por ejemplo:
+        // assertNotNull(result);
+    }
+
     // Write similar test methods for other methods in the OrderService class
 }
-
-
-

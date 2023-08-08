@@ -1,5 +1,6 @@
 package com.pragma.restaurant.dto.claim;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pragma.restaurant.entity.Order;
 
 public class ClaimResponseDTO extends ClaimDTO{
@@ -11,9 +12,7 @@ public class ClaimResponseDTO extends ClaimDTO{
 
     private String description;
 
-    private String claim_state;
-
-    private String reason;
+    private String claimState;
 
     public Long getId() {
         return id;
@@ -23,12 +22,12 @@ public class ClaimResponseDTO extends ClaimDTO{
         this.id = id;
     }
 
-    public Order getIdOrder() {
+    public Order getOrderId() {
         return orderId;
     }
 
-    public void setIdOrder(Order id_order) {
-        this.orderId = id_order;
+    public void setOrderId(Order orderId) {
+        this.orderId = orderId;
     }
 
     public String getRestaurant() {
@@ -47,19 +46,11 @@ public class ClaimResponseDTO extends ClaimDTO{
         this.description = description;
     }
 
-    public String getClaim_state() {
-        return claim_state;
+    public String getClaimState() {
+        return claimState;
     }
 
-    public void setClaim_state(String claim_state) {
-        this.claim_state = claim_state;
-    }
-
-    public String getReason() {
-        return reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
+    public void setClaimState(String claimState) {
+        this.claimState = claimState;
     }
 }

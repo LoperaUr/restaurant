@@ -1,14 +1,15 @@
 package com.pragma.restaurant.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.pragma.restaurant.util.SmSAlert;
+import com.pragma.restaurant.util.SmsAlert;
 import com.pragma.restaurant.util.StateOrder;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
@@ -28,11 +29,6 @@ public class Order {
     @JsonBackReference
     private Client userOrder;
 
-    @ManyToOne
-    @JsonBackReference
-    @JoinColumn(name = "employeeId",nullable = false)
-    private Employee employeeId;
-
     @Enumerated(EnumType.STRING)
     private StateOrder orderState = StateOrder.PENDING;
 
@@ -40,43 +36,34 @@ public class Order {
     @JsonManagedReference
     private List<OrderDetails> menuList;
 
+    private String uniqueId = null;
 
-    @Enumerated(EnumType.STRING)
-    private SmSAlert smsAlert = SmSAlert.PENDING;
+    private Date startDate;
+    private Date endDate;
 
+    private SmsAlert smsAlert;
 
-    public Order(SmSAlert smsAlert) {
-        this.smsAlert = smsAlert;
-    }
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "employee_id")
+    private Employee employeeId;
 
-    public SmSAlert getSmsAlert() {
-        return smsAlert;
-    }
-
-    public void setSmsAlert(SmSAlert smsAlert) {
-        this.smsAlert = smsAlert;
-    }
-
-    public Order() {
-    }
-
-    public Order(Long id, Character rolRequest, Character rolAp, String restaurant, Client userOrder, Employee employeeId, StateOrder orderState, List<OrderDetails> menuList) {
+    public Order(Long id, Character rolRequest, Character rolAp, String restaurant, Client userOrder, StateOrder orderState, List<OrderDetails> menuList, String uniqueId, Date startDate, Date endDate, SmsAlert smsAlert, Employee employeeId) {
         this.id = id;
         this.rolRequest = rolRequest;
         this.rolAp = rolAp;
         this.restaurant = restaurant;
         this.userOrder = userOrder;
-        this.employeeId = employeeId;
         this.orderState = orderState;
         this.menuList = menuList;
-    }
-
-    public Employee getEmployeeId() {
-        return employeeId;
-    }
-
-    public void setEmployeeId(Employee employeeId) {
+        this.uniqueId = uniqueId;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.smsAlert = smsAlert;
         this.employeeId = employeeId;
+    }
+
+    public Order() {
     }
 
     public Long getId() {
@@ -119,8 +106,6 @@ public class Order {
         this.userOrder = userOrder;
     }
 
-
-
     public StateOrder getOrderState() {
         return orderState;
     }
@@ -135,5 +120,45 @@ public class Order {
 
     public void setMenuList(List<OrderDetails> menuList) {
         this.menuList = menuList;
+    }
+
+    public String getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setSmsAlert(SmsAlert smsAlert) {
+        this.smsAlert = smsAlert;
+    }
+
+    public SmsAlert getSmsAlert() {
+        return smsAlert;
+    }
+
+    public Employee getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Employee employeeId) {
+        this.employeeId = employeeId;
     }
 }
