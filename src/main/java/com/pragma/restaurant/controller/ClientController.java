@@ -44,6 +44,7 @@ public class ClientController {
 
 
     @PostMapping("/")
+    @ApiOperation(value = "Create a client")
     ResponseEntity<ClientDTO> create(@RequestBody Client data) {
         try {
             return ResponseEntity
@@ -59,6 +60,7 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
+    @ApiOperation(value = "Update a client by ID")
     ResponseEntity<ClientDTO> update(@PathVariable Long id, @RequestBody Client data) {
         try {
             return ResponseEntity
@@ -74,6 +76,7 @@ public class ClientController {
     }
 
     @DeleteMapping("/{id}")
+    @ApiOperation(value = "Delete a client by ID")
     ResponseEntity<Boolean> delete(@PathVariable Long id) {
         try {
             return ResponseEntity
