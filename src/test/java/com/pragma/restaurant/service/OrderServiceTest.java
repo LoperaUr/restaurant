@@ -4,7 +4,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.pragma.restaurant.dto.order.OrderResponseDTO;
-import com.pragma.restaurant.entity.Client;
 import com.pragma.restaurant.entity.Menu;
 import com.pragma.restaurant.entity.Order;
 import com.pragma.restaurant.entity.OrderDetails;
