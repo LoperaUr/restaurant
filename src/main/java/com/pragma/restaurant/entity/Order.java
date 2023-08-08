@@ -39,7 +39,7 @@ public class Order {
 
     private String uniqueId = null;
 
-    private Date startDate;
+    private Date startDate ;
     private Date endDate;
 
     private SmsAlert smsAlert;

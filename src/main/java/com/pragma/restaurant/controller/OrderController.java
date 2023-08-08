@@ -89,12 +89,58 @@ public class OrderController {
     }
 
 
-    @PutMapping("/{id}")
+    @PutMapping("inPreparation/{id}")
     ResponseEntity<OrderResponseDTO> updateOrderStateToInPreparation(@PathVariable Long id, @RequestParam Long idEmployee, @RequestParam Character rol) {
         try {
             return ResponseEntity
                     .ok()
                     .body(orderService.updateOrderStateToInPreparation(id, rol, idEmployee));
+        } catch (Exception e) {
+            OrderErrorDTO resError = new OrderErrorDTO();
+            resError.setError(e.getMessage());
+            return ResponseEntity
+                    .badRequest()
+                    .body(null);
+        }
+    }
+
+
+    @PutMapping("toReady/{id}")
+    ResponseEntity<OrderResponseDTO> updateOrderStateToReady(@PathVariable Long id, @RequestBody Order data) {
+        try {
+            return ResponseEntity
+                    .ok()
+                    .body(orderService.updateOrderStateToReady(id, data));
+        } catch (Exception e) {
+            OrderErrorDTO resError = new OrderErrorDTO();
+            resError.setError(e.getMessage());
+            return ResponseEntity
+                    .badRequest()
+                    .body(null);
+        }
+    }
+
+    @PutMapping("toDelivered/{id}")
+    ResponseEntity<OrderResponseDTO> updateOrderStateToDelivered(@PathVariable Long id, @RequestBody Order data) {
+        try {
+            return ResponseEntity
+                    .ok()
+                    .body(orderService.updateOrderStateToDelivered(id, data));
+        } catch (Exception e) {
+            OrderErrorDTO resError = new OrderErrorDTO();
+            resError.setError(e.getMessage());
+            return ResponseEntity
+                    .badRequest()
+                    .body(null);
+        }
+    }
+
+    @PutMapping("toCancelled/{id}")
+    ResponseEntity<OrderResponseDTO> updateOrderStateToCancelled(@PathVariable Long id) {
+        try {
+            return ResponseEntity
+                    .ok()
+                    .body(orderService.updateOrderStateToCancelled(id));
         } catch (Exception e) {
             OrderErrorDTO resError = new OrderErrorDTO();
             resError.setError(e.getMessage());

@@ -2,3 +2,4 @@ Tu pedido está en lista de pendientesnullnullnull
 Tu pedido: nullestá en lista de pendientes nullnull
 Tu pedido: nullestá en lista de pendientes nullnull
 Tu pedido: nullestá en lista de pendientes nullnull
+tu pedido: 15estÃ¡ siendo preparado. NombreRestaurante[com.pragma.restaurant.entity.OrderDetails@56678086, com.pragma.restaurant.entity.OrderDetails@5adb2f8e]

@@ -123,6 +123,7 @@ public class OrderService implements BaseService<OrderDTO, Order> {
             Order order = orderOptional.get();
             order.setOrderState(StateOrder.IN_PREPARATION);
             assignOrderToEmployee(id, employee);
+            toSendSmsAlerts(id, order);
             return orderMapper.toDto(orderRepository.save(order));
 
         } catch (Exception e) {
@@ -140,18 +141,19 @@ public class OrderService implements BaseService<OrderDTO, Order> {
                 throw new Exception("No existe la orden");
             }
             Order order = orderOptional.get();
-            if(data.getOrderState().equals(StateOrder.DELIVERED)) {
-                if (!data.getOrderState().equals(StateOrder.READY)){
+            if (data.getOrderState().equals(StateOrder.DELIVERED)) {
+                if (!data.getOrderState().equals(StateOrder.READY)) {
                     throw new Exception("No se puede modificar el estado a pendiente o en preparacion");
                 }
                 order.setOrderState(StateOrder.READY);
                 data.setUniqueId(order.getUniqueId());
-                if(data.getEndDate() != null){
+                if (data.getEndDate() != null) {
                     Long startDate = order.getStartDate().getTime();
                     Long endDate = data.getEndDate().getTime();
                     OrderValidation.getTimeBetweenDates(startDate, endDate);
                 }
             }
+            toSendSmsAlerts(id, order);
             return orderMapper.toDto(orderRepository.save(order));
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -169,7 +171,7 @@ public class OrderService implements BaseService<OrderDTO, Order> {
                 throw new Exception("No existe la orden");
             }
             Order order = orderOptional.get();
-            if(data.getOrderState().equals(StateOrder.READY)){
+            if (data.getOrderState().equals(StateOrder.READY)) {
                 order.setOrderState(StateOrder.DELIVERED);
             }
 
@@ -181,23 +183,16 @@ public class OrderService implements BaseService<OrderDTO, Order> {
     }
 
 
-    public OrderResponseDTO updateOrderStateToCancelled(Long id,Order order)throws Exception{
+    public OrderResponseDTO updateOrderStateToCancelled(Long id) throws Exception {
         try {
             Optional<Order> orderOptional = orderRepository.findById(id);
-            if(orderOptional.get().getOrderState()!=StateOrder.PENDING) {
+            Order order = orderOptional.get();
+            if (order.getOrderState() != StateOrder.PENDING) {
                 throw new Exception("Lo sentimos, tu pedido ya está en preparación y no puede cancelarse");
             }
 
-            if (orderOptional.isEmpty()) {
-                throw new Exception("No existe la orden");
-            }else{
-
-                order.setOrderState(StateOrder.CANCELLED);
-
-                return orderMapper.toDto(orderRepository.save(order));
-
-
-            }
+            order.setOrderState(StateOrder.CANCELLED);
+            return orderMapper.toDto(orderRepository.save(order));
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -232,7 +227,7 @@ public class OrderService implements BaseService<OrderDTO, Order> {
             order.setSmsAlert(smsAlert);
             orderRepository.save(order);
 
-            String registry = getRegistryMessage(smsAlert,order);
+            String registry = getRegistryMessage(smsAlert, order);
             writeSmsToLogFile(registry);
 
             return orderMapper.toDto(order);
@@ -246,20 +241,20 @@ public class OrderService implements BaseService<OrderDTO, Order> {
         String message;
         switch (smsAlert) {
             case PENDING:
-                message = "Tu pedido: "+order.getId()+"está en lista de pendientes "+order.getRestaurant()+ order.getMenuList();
+                message = "Tu pedido: " + order.getId() + "está en lista de pendientes " + order.getRestaurant() + order.getMenuList();
                 break;
             case READY:
-                message = "tu pedido: "+order.getId()+"está listo, prepárate para recibirlo. "+order.getRestaurant()+order.getId()+ order.getMenuList();
+                message = "tu pedido: " + order.getId() + "está listo, prepárate para recibirlo. " + order.getRestaurant() + order.getId() + order.getMenuList();
                 break;
             case IN_PREPARATION:
-                message = "tu pedido: "+order.getId()+ "está siendo preparado. "+order.getRestaurant()+order.getMenuList();
+                message = "tu pedido: " + order.getId() + "está siendo preparado. " + order.getRestaurant() + order.getMenuList();
                 break;
 
             case DELIVERED:
-                message = "tu pedido: "+order.getId()+"ha sido entregado. "+order.getRestaurant()+order.getId()+ order.getMenuList();
+                message = "tu pedido: " + order.getId() + "ha sido entregado. " + order.getRestaurant() + order.getId() + order.getMenuList();
                 break;
             case CANCELLED:
-                message = "tu pedido "+order.getId()+"ha sido cancelado. por el motivo: ";//+order.getClaim();
+                message = "tu pedido " + order.getId() + "ha sido cancelado. por el motivo: ";//+order.getClaim();
                 break;
             default:
                 message = "";
@@ -275,7 +270,6 @@ public class OrderService implements BaseService<OrderDTO, Order> {
             writer.newLine();
         }
     }
-
 
 
     public void assignOrderToEmployee(Long id, Long idEmployee) throws Exception {

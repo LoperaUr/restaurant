@@ -202,7 +202,7 @@ public class OrderServiceTest {
 
         // Llamar al método que se está probando con parámetros válidos
         Long orderId = 1L;
-        OrderResponseDTO result = orderService.updateOrderStateToCancelled(orderId, order);
+        OrderResponseDTO result = orderService.updateOrderStateToCancelled(orderId);
 
         // Verificar el comportamiento esperado
         verify(orderRepositoryMock, times(1)).findById(eq(orderId));
