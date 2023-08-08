@@ -6,6 +6,8 @@ import com.pragma.restaurant.dto.claim.ClaimResponseDTO;
 import com.pragma.restaurant.entity.Claim;
 import com.pragma.restaurant.service.ClaimService;
 import com.pragma.restaurant.util.StateClaim;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/claim")
+@Api(value = "Claim Management System", description = "Operations related to claims")
+
 public class ClaimController {
 
     private final ClaimService claimService;
@@ -22,6 +26,7 @@ public class ClaimController {
     }
 
     @PostMapping("/")
+    @ApiOperation(value = "Create a claim")
     ResponseEntity<ClaimDTO> create(@RequestBody Claim data) {
         try {
             return ResponseEntity
@@ -37,6 +42,7 @@ public class ClaimController {
     }
 
     @GetMapping("/")
+    @ApiOperation(value = "Get claims with pending status")
     ResponseEntity<List<ClaimResponseDTO>> searchStatusPending() {
         try {
             return ResponseEntity
@@ -50,6 +56,7 @@ public class ClaimController {
     }
 
     @PutMapping("/{id}")
+    @ApiOperation(value = "Update claim state by ID")
     ResponseEntity<ClaimResponseDTO> updateState(
             @PathVariable Long id,
             @RequestParam StateClaim state
@@ -67,6 +74,7 @@ public class ClaimController {
 
 
     @DeleteMapping("/{id}")
+    @ApiOperation(value = "Delete a claim by ID")
     ResponseEntity<Boolean> delete(@PathVariable Long id) {
         try {
             return ResponseEntity
