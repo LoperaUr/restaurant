@@ -29,6 +29,7 @@ public class Order {
     @JsonBackReference
     private Client userOrder;
 
+
     @Enumerated(EnumType.STRING)
     private StateOrder orderState = StateOrder.PENDING;
 
