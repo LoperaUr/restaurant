@@ -43,7 +43,7 @@ public class OrderController {
     }
 
 
-    @GetMapping("/byState")
+    @GetMapping("/byStateAndRestaurant")
     @ApiOperation(value = "Filter orders by state and restaurant")
     ResponseEntity<List<OrderResponseDTO>> filterByStateAndRestaurant(
             @RequestParam Character rol,
@@ -52,7 +52,7 @@ public class OrderController {
             @RequestParam int size
     ) {
         try {
-            Page<OrderResponseDTO> pageOrders = orderService.getListOrdersByStateAndRestaurant(rol, restaurant,  state, size);
+            Page<OrderResponseDTO> pageOrders = orderService.getListOrdersByStateAndRestaurant(rol, restaurant, state, size);
             List<OrderResponseDTO> orders = pageOrders.getContent();
             return ResponseEntity
                     .ok()
@@ -66,8 +66,31 @@ public class OrderController {
         }
     }
 
+    @GetMapping("/byState")
+    @ApiOperation(value = "Filter orders by state ")
+    ResponseEntity<List<OrderResponseDTO>> filterByState(
+            @RequestParam Character rol,
+            @RequestParam StateOrder state,
+            @RequestParam int size
+    ) {
+        try {
+            Page<OrderResponseDTO> pageOrders = orderService.getListOrdersByState(rol, state, size);
+            List<OrderResponseDTO> orders = pageOrders.getContent();
+            return ResponseEntity
+                    .ok()
+                    .body(orders);
+        } catch (Exception e) {
+            OrderErrorDTO resError = new OrderErrorDTO();
+            resError.setError(e.getMessage());
+            return ResponseEntity
+                    .badRequest()
+                    .body(null);
+        }
+    }
+
+
     @PutMapping("/{id}")
-    ResponseEntity<OrderResponseDTO> updateOrderStateToInPreparation (@PathVariable Long  id, @RequestParam Long idEmployee, @RequestParam Character rol) {
+    ResponseEntity<OrderResponseDTO> updateOrderStateToInPreparation(@PathVariable Long id, @RequestParam Long idEmployee, @RequestParam Character rol) {
         try {
             return ResponseEntity
                     .ok()
@@ -80,8 +103,6 @@ public class OrderController {
                     .body(null);
         }
     }
-
-
 
 
 }
