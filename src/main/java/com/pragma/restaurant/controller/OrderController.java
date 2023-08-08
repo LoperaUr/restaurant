@@ -43,7 +43,7 @@ public class OrderController {
     }
 
 
-    @GetMapping("/byState")
+    @GetMapping("/")
     @ApiOperation(value = "Filter orders by state and restaurant")
     ResponseEntity<List<OrderResponseDTO>> filterByStateAndRestaurant(
             @RequestParam Character rol,
@@ -53,6 +53,27 @@ public class OrderController {
     ) {
         try {
             Page<OrderResponseDTO> pageOrders = orderService.getListOrdersByStateAndRestaurant(rol, restaurant,  state, size);
+            List<OrderResponseDTO> orders = pageOrders.getContent();
+            return ResponseEntity
+                    .ok()
+                    .body(orders);
+        } catch (Exception e) {
+            OrderErrorDTO resError = new OrderErrorDTO();
+            resError.setError(e.getMessage());
+            return ResponseEntity
+                    .badRequest()
+                    .body(null);
+        }
+    }
+    @GetMapping("/byState")
+    @ApiOperation(value = "Filter orders by state ")
+    ResponseEntity<List<OrderResponseDTO>> filterByState(
+            @RequestParam Character rol,
+            @RequestParam StateOrder state,
+            @RequestParam int size
+    ) {
+        try {
+            Page<OrderResponseDTO> pageOrders = orderService.getListOrdersByState(rol, state, size);
             List<OrderResponseDTO> orders = pageOrders.getContent();
             return ResponseEntity
                     .ok()
