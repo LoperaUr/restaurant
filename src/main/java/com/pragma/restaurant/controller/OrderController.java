@@ -65,4 +65,23 @@ public class OrderController {
                     .body(null);
         }
     }
+
+    @PutMapping("/{id}")
+    ResponseEntity<OrderResponseDTO> updateOrderStateToInPreparation (@PathVariable Long  id, @RequestParam Long idEmployee, @RequestParam Character rol) {
+        try {
+            return ResponseEntity
+                    .ok()
+                    .body(orderService.updateOrderStateToInPreparation(id, rol, idEmployee));
+        } catch (Exception e) {
+            OrderErrorDTO resError = new OrderErrorDTO();
+            resError.setError(e.getMessage());
+            return ResponseEntity
+                    .badRequest()
+                    .body(null);
+        }
+    }
+
+
+
+
 }

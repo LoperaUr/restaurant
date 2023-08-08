@@ -1,6 +1,7 @@
 package com.pragma.restaurant.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.pragma.restaurant.util.SmsAlert;
@@ -28,6 +29,7 @@ public class Order {
     @JsonBackReference
     private Client userOrder;
 
+
     @Enumerated(EnumType.STRING)
     private StateOrder orderState = StateOrder.PENDING;
 
@@ -42,8 +44,12 @@ public class Order {
 
     private SmsAlert smsAlert;
 
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "employee_id")
+    private Employee employeeId;
 
-    public Order(Long id, Character rolRequest, Character rolAp, String restaurant, Client userOrder, StateOrder orderState, List<OrderDetails> menuList, String uniqueId, Date startDate, Date endDate, SmsAlert smsAlert) {
+    public Order(Long id, Character rolRequest, Character rolAp, String restaurant, Client userOrder, StateOrder orderState, List<OrderDetails> menuList, String uniqueId, Date startDate, Date endDate, SmsAlert smsAlert, Employee employeeId) {
         this.id = id;
         this.rolRequest = rolRequest;
         this.rolAp = rolAp;
@@ -55,6 +61,7 @@ public class Order {
         this.startDate = startDate;
         this.endDate = endDate;
         this.smsAlert = smsAlert;
+        this.employeeId = employeeId;
     }
 
     public Order() {
@@ -146,5 +153,13 @@ public class Order {
 
     public SmsAlert getSmsAlert() {
         return smsAlert;
+    }
+
+    public Employee getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Employee employeeId) {
+        this.employeeId = employeeId;
     }
 }

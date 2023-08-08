@@ -36,15 +36,15 @@ public class OrderService implements BaseService<OrderDTO, Order> {
 
     private final OrderDetailRespository orderDetailRespository;
 
+    private final EmployeeRepository employeeRepository;
 
-
-    public OrderService(OrderRepository orderRepository, ClientRepository clientRepository, OrderMapper orderMapper, MenuRepository menuRepository, OrderDetailRespository orderDetailRespository) {
+    public OrderService(OrderRepository orderRepository, ClientRepository clientRepository, OrderMapper orderMapper, MenuRepository menuRepository, OrderDetailRespository orderDetailRespository, EmployeeRepository employeeRepository) {
         this.orderRepository = orderRepository;
         this.clientRepository = clientRepository;
         this.orderMapper = orderMapper;
         this.menuRepository = menuRepository;
         this.orderDetailRespository = orderDetailRespository;
-
+        this.employeeRepository = employeeRepository;
     }
 
     public OrderResponseDTO createOrder(Order order) throws Exception {
@@ -79,7 +79,6 @@ public class OrderService implements BaseService<OrderDTO, Order> {
             ) {
                 orderDetailRespository.save(detail);
             }
-
             return orderResponseDTO;
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -112,9 +111,9 @@ public class OrderService implements BaseService<OrderDTO, Order> {
         }
     }
 
-    public OrderResponseDTO updateOrderStateToInPreparation(Long id, Order data) throws Exception {
+    public OrderResponseDTO updateOrderStateToInPreparation(Long id, Character rol, Long employee) throws Exception {
         try {
-            if (data.getRolAp() != ('A')) {
+            if (rol != ('A')) {
                 throw new Exception("No tiene permisos para actualizar una orden");
             }
             Optional<Order> orderOptional = orderRepository.findById(id);
@@ -123,11 +122,7 @@ public class OrderService implements BaseService<OrderDTO, Order> {
             }
             Order order = orderOptional.get();
             order.setOrderState(StateOrder.IN_PREPARATION);
-
-
-
-
-
+            assignOrderToEmployee(id, employee);
             return orderMapper.toDto(orderRepository.save(order));
 
         } catch (Exception e) {
@@ -281,15 +276,23 @@ public class OrderService implements BaseService<OrderDTO, Order> {
         }
     }
 
-    public List<Order> getOrderTraceForClient(Long clientId) {
-        Client client = clientRepository.findById(clientId).orElse(null);
-        if (client != null) {
-                return (List<Order>) orderMapper.toDto(orderRepository.findByUserOrder(client));
-        } else {
-            return Collections.emptyList();
+
+
+    public void assignOrderToEmployee(Long id, Long idEmployee) throws Exception {
+        try {
+            Optional<Order> orderOptional = orderRepository.findById(id);
+            if (orderOptional.isEmpty()) {
+                throw new EntityNotFoundException("Order not found with ID: " + id);
+            }
+            Optional<Employee> optionalEmployee = employeeRepository.findById(idEmployee);
+            if (optionalEmployee.isEmpty()) {
+                throw new EntityNotFoundException("Employee not found with ID: " + idEmployee);
+            }
+            Order order = orderOptional.get();
+            Employee employee = optionalEmployee.get();
+            order.setEmployeeId(employee);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
-
-
-
 }
